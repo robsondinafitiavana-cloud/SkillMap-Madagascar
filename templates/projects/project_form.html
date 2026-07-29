@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}{{ action }} un projet{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold text-gray-900 mb-6">{{ action }} un projet</h1>
+<div class="bg-white border border-gray-200 rounded-2xl p-6 max-w-2xl">
+  <form method="post" enctype="multipart/form-data" class="space-y-4">
+    {% csrf_token %}
+    <div><label class="text-sm font-medium text-gray-700">Titre</label>{{ form.title }}</div>
+    <div><label class="text-sm font-medium text-gray-700">Description</label>{{ form.description }}</div>
+    <div><label class="text-sm font-medium text-gray-700">Technologies (séparées par des virgules)</label>{{ form.technologies }}</div>
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="text-sm font-medium text-gray-700">Lien GitHub</label>{{ form.github_url }}</div>
+      <div><label class="text-sm font-medium text-gray-700">Lien démo</label>{{ form.demo_url }}</div>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="text-sm font-medium text-gray-700">Date</label>{{ form.date }}</div>
+      <div><label class="text-sm font-medium text-gray-700">Image</label>{{ form.image }}</div>
+    </div>
+    <button type="submit" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition">Enregistrer</button>
+  </form>
+</div>
+{% endblock %}

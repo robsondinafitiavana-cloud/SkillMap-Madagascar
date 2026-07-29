@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}{{ action }} une offre{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold text-gray-900 mb-6">{{ action }} une offre</h1>
+<div class="bg-white border border-gray-200 rounded-2xl p-6 max-w-2xl">
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    <div><label class="text-sm font-medium text-gray-700">Titre</label>{{ form.title }}</div>
+    <div><label class="text-sm font-medium text-gray-700">Description</label>{{ form.description }}</div>
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="text-sm font-medium text-gray-700">Type de contrat</label>{{ form.contract_type }}</div>
+      <div><label class="text-sm font-medium text-gray-700">Salaire</label>{{ form.salary }}</div>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="text-sm font-medium text-gray-700">Ville</label>{{ form.city }}</div>
+      <div><label class="text-sm font-medium text-gray-700">Date limite</label>{{ form.deadline }}</div>
+    </div>
+    <div>
+      <label class="text-sm font-medium text-gray-700 block mb-1">Compétences requises</label>
+      <p class="text-xs text-gray-400 mb-2">
+        Compétence manquante ?
+        <a href="{% url 'skills:skill_catalog' %}" class="text-mg-green font-semibold hover:underline">Ajoutez-la au référentiel</a>.
+      </p>
+      <div class="grid grid-cols-2 gap-1 max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3">{{ form.required_skills }}</div>
+    </div>
+    <label class="flex items-center gap-2 text-sm text-gray-600">{{ form.is_active }} Offre active</label>
+    <button type="submit" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition">Publier</button>
+  </form>
+</div>
+{% endblock %}

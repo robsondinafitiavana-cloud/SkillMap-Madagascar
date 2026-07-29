@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Mon profil{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold text-gray-900 mb-1">Mon profil</h1>
+<p class="text-gray-500 text-sm mb-6">Ces informations apparaissent sur votre CV et votre portfolio public.</p>
+
+<div class="bg-white border border-gray-200 rounded-2xl p-6 max-w-3xl">
+  <form method="post" enctype="multipart/form-data" class="space-y-4">
+    {% csrf_token %}
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="text-sm font-medium text-gray-700">Prénom</label>{{ form.first_name }}</div>
+      <div><label class="text-sm font-medium text-gray-700">Nom</label>{{ form.last_name }}</div>
+    </div>
+    <div><label class="text-sm font-medium text-gray-700">Photo</label>{{ form.photo }}</div>
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="text-sm font-medium text-gray-700">Téléphone</label>{{ form.phone }}</div>
+      <div><label class="text-sm font-medium text-gray-700">Ville</label>{{ form.city }}</div>
+    </div>
+    <div><label class="text-sm font-medium text-gray-700">Adresse</label>{{ form.address }}</div>
+    <div class="grid grid-cols-3 gap-4">
+      <div><label class="text-sm font-medium text-gray-700">Université</label>{{ form.university }}</div>
+      <div><label class="text-sm font-medium text-gray-700">Filière</label>{{ form.department }}</div>
+      <div><label class="text-sm font-medium text-gray-700">Niveau</label>{{ form.level }}</div>
+    </div>
+    <div><label class="text-sm font-medium text-gray-700">Description personnelle</label>{{ form.bio }}</div>
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="text-sm font-medium text-gray-700">LinkedIn</label>{{ form.linkedin_url }}</div>
+      <div><label class="text-sm font-medium text-gray-700">GitHub</label>{{ form.github_url }}</div>
+    </div>
+    <label class="flex items-center gap-2 text-sm text-gray-600">{{ form.portfolio_public }} Rendre mon portfolio public</label>
+    <button type="submit" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition">Enregistrer</button>
+  </form>
+</div>
+
+{% if student.portfolio_public %}
+<p class="text-sm text-gray-500 mt-4">Votre portfolio public : <a class="text-mg-green font-semibold hover:underline" href="{% url 'students:portfolio' student.slug %}">{{ request.scheme }}://{{ request.get_host }}{% url 'students:portfolio' student.slug %}</a></p>
+{% endif %}
+{% endblock %}

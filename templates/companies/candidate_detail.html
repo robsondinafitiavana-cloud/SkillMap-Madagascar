@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}{{ student.full_name }}{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <div class="bg-white border border-gray-200 rounded-2xl p-8 flex items-start gap-6">
+    {% if student.photo %}<img src="{{ student.photo.url }}" class="w-20 h-20 rounded-full object-cover">{% else %}<div class="w-20 h-20 rounded-full bg-mg-green/10 text-mg-green flex items-center justify-center text-2xl font-bold">{{ student.first_name|slice:":1" }}</div>{% endif %}
+    <div class="flex-1">
+      <h1 class="text-xl font-extrabold text-gray-900">{{ student.full_name }}</h1>
+      <p class="text-gray-500 text-sm">{{ student.department }} • {{ student.get_level_display }} • {{ student.university }}</p>
+      {% if student.bio %}<p class="text-gray-600 text-sm mt-3">{{ student.bio }}</p>{% endif %}
+      <div class="flex gap-3 mt-2 text-xs">
+        {% if student.user.email %}<span class="text-gray-500">✉️ {{ student.user.email }}</span>{% endif %}
+        {% if student.phone %}<span class="text-gray-500">📞 {{ student.phone }}</span>{% endif %}
+      </div>
+    </div>
+    <div class="text-center bg-gray-50 rounded-2xl p-4">
+      <p class="text-2xl font-extrabold text-mg-green">{{ score.total }}</p>
+      <p class="text-xs text-gray-400">Score /100</p>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-6 mt-6">
+    <div class="bg-white border border-gray-200 rounded-2xl p-6">
+      <h2 class="font-bold text-gray-900 mb-3">Compétences</h2>
+      <div class="flex flex-wrap gap-2">
+        {% for ss in student.student_skills.all %}
+        <span class="bg-mg-green/10 text-mg-green text-xs font-semibold px-3 py-1.5 rounded-full">{{ ss.skill.name }} · {{ ss.get_level_display }}</span>
+        {% empty %}<p class="text-sm text-gray-400">Aucune compétence renseignée.</p>{% endfor %}
+      </div>
+    </div>
+    <div class="bg-white border border-gray-200 rounded-2xl p-6">
+      <h2 class="font-bold text-gray-900 mb-3">Certificats</h2>
+      {% for c in student.certificates.all %}
+      <p class="text-sm text-gray-700 py-1.5 border-b border-gray-50 last:border-0"><b>{{ c.title }}</b> — {{ c.organization }}</p>
+      {% empty %}<p class="text-sm text-gray-400">Aucun certificat renseigné.</p>{% endfor %}
+    </div>
+  </div>
+
+  <div class="bg-white border border-gray-200 rounded-2xl p-6 mt-6">
+    <h2 class="font-bold text-gray-900 mb-4">Projets</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      {% for p in student.projects.all %}
+      <div class="border border-gray-100 rounded-xl p-4">
+        <p class="font-semibold text-gray-900">{{ p.title }}</p>
+        <p class="text-sm text-gray-500 mt-1">{{ p.description|truncatewords:20 }}</p>
+        <p class="text-xs text-gray-400 mt-2">{{ p.technologies }}</p>
+      </div>
+      {% empty %}<p class="text-sm text-gray-400">Aucun projet renseigné.</p>{% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

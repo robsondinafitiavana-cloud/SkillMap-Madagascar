@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Mes offres{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-extrabold text-gray-900">Mes offres</h1>
+  <a href="{% url 'jobs:job_create' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">➕ Publier une offre</a>
+</div>
+<div class="space-y-4">
+  {% for job in jobs %}
+  <div class="bg-white border border-gray-200 rounded-2xl p-5 flex items-center justify-between">
+    <div>
+      <p class="font-bold text-gray-900">{{ job.title }}</p>
+      <p class="text-sm text-gray-500">{{ job.get_contract_type_display }} • {{ job.applications.count }} candidature(s) • Échéance {{ job.deadline }}</p>
+    </div>
+    <div class="flex items-center gap-4 text-xs">
+      <span class="px-2.5 py-1 rounded-full font-semibold {% if job.is_active %}bg-green-50 text-mg-green{% else %}bg-gray-100 text-gray-500{% endif %}">
+        {% if job.is_active %}Active{% else %}Fermée{% endif %}
+      </span>
+      <a href="{% url 'applications:job_applications' job.pk %}" class="text-mg-green font-semibold hover:underline">Candidatures</a>
+      <a href="{% url 'jobs:job_edit' job.pk %}" class="text-gray-500 font-semibold hover:text-gray-800">Modifier</a>
+      <a href="{% url 'jobs:job_delete' job.pk %}" class="text-mg-red font-semibold hover:underline">Supprimer</a>
+    </div>
+  </div>
+  {% empty %}
+  <div class="bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Vous n'avez publié aucune offre.</div>
+  {% endfor %}
+</div>
+{% endblock %}

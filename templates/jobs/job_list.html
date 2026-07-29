@@ -1,0 +1,43 @@
+{% extends user.is_authenticated|yesno:'base.html,base_public.html' %}
+{% block title %}Offres d'emploi{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 md:px-6 py-8">
+<h1 class="text-2xl font-extrabold text-gray-900 mb-6">Offres d'emploi</h1>
+
+<form method="get" class="bg-white border border-gray-200 rounded-2xl p-4 mb-6 grid md:grid-cols-4 gap-3">
+  <input type="text" name="q" value="{{ filters.q }}" placeholder="Titre, compétence..." class="md:col-span-2">
+  <select name="contract_type">
+    <option value="">Tous les contrats</option>
+    {% for value, label in contract_choices %}
+    <option value="{{ value }}" {% if filters.contract_type == value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <div class="flex gap-2">
+    <input type="text" name="city" value="{{ filters.city }}" placeholder="Ville">
+    <button type="submit" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-4 rounded-lg text-sm whitespace-nowrap">Filtrer</button>
+  </div>
+</form>
+
+<div class="space-y-4">
+  {% for job in page_obj %}
+  <a href="{% url 'jobs:job_detail' job.pk %}" class="block bg-white border border-gray-200 hover:border-mg-green rounded-2xl p-5 transition">
+    <div class="flex items-start justify-between">
+      <div>
+        <p class="font-bold text-gray-900">{{ job.title }}</p>
+        <p class="text-sm text-gray-500">{{ job.company.company_name }} • {{ job.city|default:"Madagascar" }}</p>
+      </div>
+      <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-mg-green/10 text-mg-green">{{ job.get_contract_type_display }}</span>
+    </div>
+    <p class="text-sm text-gray-500 mt-2">{{ job.description|truncatewords:25 }}</p>
+    <div class="flex items-center gap-3 mt-3 text-xs text-gray-400">
+      {% if job.salary %}<span>💰 {{ job.salary }}</span>{% endif %}
+      <span>⏳ Échéance : {{ job.deadline }}</span>
+    </div>
+  </a>
+  {% empty %}
+  <div class="bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Aucune offre ne correspond à votre recherche.</div>
+  {% endfor %}
+</div>
+{% include 'partials/pagination.html' %}
+</div>
+{% endblock %}

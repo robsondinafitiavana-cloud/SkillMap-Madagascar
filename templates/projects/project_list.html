@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Mes projets{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-extrabold text-gray-900">Mes projets</h1>
+  <a href="{% url 'projects:project_create' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">➕ Ajouter un projet</a>
+</div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+  {% for p in projects %}
+  <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden flex flex-col">
+    {% if p.image %}<img src="{{ p.image.url }}" class="h-36 w-full object-cover">{% else %}<div class="h-36 w-full bg-gradient-to-br from-mg-red/10 to-mg-green/10 flex items-center justify-center text-3xl">💼</div>{% endif %}
+    <div class="p-5 flex-1 flex flex-col">
+      <p class="font-bold text-gray-900">{{ p.title }}</p>
+      <p class="text-sm text-gray-500 mt-1 flex-1">{{ p.description|truncatewords:18 }}</p>
+      <p class="text-xs text-gray-400 mt-2">{{ p.technologies }}</p>
+      <div class="flex items-center justify-between mt-4 text-xs">
+        <div class="flex gap-3">
+          {% if p.github_url %}<a href="{{ p.github_url }}" class="text-mg-green font-semibold hover:underline">GitHub</a>{% endif %}
+          {% if p.demo_url %}<a href="{{ p.demo_url }}" class="text-mg-green font-semibold hover:underline">Démo</a>{% endif %}
+        </div>
+        <div class="flex gap-3">
+          <a href="{% url 'projects:project_edit' p.pk %}" class="text-gray-500 hover:text-gray-800 font-semibold">Modifier</a>
+          <a href="{% url 'projects:project_delete' p.pk %}" class="text-mg-red font-semibold hover:underline">Supprimer</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="md:col-span-2 lg:col-span-3 bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Aucun projet ajouté pour le moment.</div>
+  {% endfor %}
+</div>
+{% endblock %}

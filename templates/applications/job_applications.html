@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Candidatures — {{ job.title }}{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold text-gray-900 mb-1">Candidatures pour « {{ job.title }} »</h1>
+<p class="text-gray-500 text-sm mb-6">{{ applications.count }} candidature(s) reçue(s)</p>
+<div class="space-y-3">
+  {% for a in applications %}
+  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+    <div class="flex items-center justify-between">
+      <div>
+        <a href="{% url 'companies:candidate_detail' a.student.pk %}" class="font-semibold text-gray-900 hover:text-mg-green">{{ a.student.full_name }}</a>
+        <p class="text-sm text-gray-500">{{ a.student.university }} • {{ a.student.department }} • Postulé le {{ a.applied_at|date:"d/m/Y" }}</p>
+      </div>
+      <span class="px-3 py-1.5 rounded-full text-xs font-semibold
+        {% if a.status == 'ACCEPTED' %}bg-green-50 text-mg-green
+        {% elif a.status == 'REJECTED' %}bg-red-50 text-mg-red
+        {% else %}bg-amber-50 text-amber-700{% endif %}">
+        {{ a.get_status_display }}
+      </span>
+    </div>
+    {% if a.message %}<p class="text-sm text-gray-600 mt-3 bg-gray-50 rounded-lg p-3">{{ a.message }}</p>{% endif %}
+    <div class="flex gap-3 mt-3 text-xs">
+      <a href="{% url 'applications:update_status' a.pk 'ACCEPTED' %}" class="text-mg-green font-semibold hover:underline">Accepter</a>
+      <a href="{% url 'applications:update_status' a.pk 'REJECTED' %}" class="text-mg-red font-semibold hover:underline">Refuser</a>
+      <a href="{% url 'applications:update_status' a.pk 'PENDING' %}" class="text-gray-500 font-semibold hover:underline">Remettre en attente</a>
+    </div>
+  </div>
+  {% empty %}
+  <div class="bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Aucune candidature reçue pour cette offre.</div>
+  {% endfor %}
+</div>
+{% endblock %}

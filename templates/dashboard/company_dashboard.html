@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Tableau de bord — {{ company.company_name }}{% endblock %}
+{% block content %}
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+  <div>
+    <h1 class="text-2xl font-extrabold text-gray-900">{{ company.company_name }} 🏢</h1>
+    <p class="text-gray-500 text-sm">{{ company.sector|default:"Secteur non renseigné" }} • {{ company.city|default:"Madagascar" }}</p>
+  </div>
+  <div class="flex gap-3">
+    <a href="{% url 'companies:search_candidates' %}" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">🔍 Rechercher des talents</a>
+    <a href="{% url 'jobs:job_create' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">➕ Publier une offre</a>
+  </div>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+    <p class="text-xs text-gray-400 font-medium uppercase">Offres publiées</p>
+    <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_jobs }}</p>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+    <p class="text-xs text-gray-400 font-medium uppercase">Offres actives</p>
+    <p class="text-2xl font-extrabold text-mg-green mt-1">{{ nb_active_jobs }}</p>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+    <p class="text-xs text-gray-400 font-medium uppercase">Candidatures reçues</p>
+    <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_applications }}</p>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+    <p class="text-xs text-gray-400 font-medium uppercase">Profils consultés</p>
+    <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_profiles_viewed }}</p>
+  </div>
+</div>
+
+<div class="grid lg:grid-cols-3 gap-6">
+  <div class="bg-white border border-gray-200 rounded-2xl p-6">
+    <p class="text-sm font-semibold text-gray-700 mb-3">Candidatures par statut</p>
+    <canvas id="statusChart" height="220"></canvas>
+  </div>
+
+  <div class="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6">
+    <div class="flex items-center justify-between mb-3">
+      <p class="text-sm font-semibold text-gray-700">Offres récentes</p>
+      <a href="{% url 'jobs:company_job_list' %}" class="text-xs text-mg-green font-semibold hover:underline">Voir tout</a>
+    </div>
+    {% if recent_jobs %}
+    <ul class="divide-y divide-gray-100">
+      {% for job in recent_jobs %}
+      <li class="py-3 flex items-center justify-between text-sm">
+        <div>
+          <p class="font-medium text-gray-800">{{ job.title }}</p>
+          <p class="text-xs text-gray-400">{{ job.get_contract_type_display }} • Échéance {{ job.deadline }}</p>
+        </div>
+        <span class="px-2.5 py-1 rounded-full text-xs font-semibold {% if job.is_active %}bg-green-50 text-mg-green{% else %}bg-gray-100 text-gray-500{% endif %}">
+          {% if job.is_active %}Active{% else %}Fermée{% endif %}
+        </span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-sm text-gray-400">Vous n'avez publié aucune offre pour le moment.</p>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+new Chart(document.getElementById('statusChart'), {
+  type: 'pie',
+  data: { labels: {{ status_chart_labels|safe }}, datasets: [{ data: {{ status_chart_data|safe }}, backgroundColor: ['#F59E0B', '#007E33', '#CE1126'] }] },
+  options: { plugins: { legend: { position: 'bottom' } } }
+});
+</script>
+{% endblock %}

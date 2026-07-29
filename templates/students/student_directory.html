@@ -1,0 +1,36 @@
+{% extends user.is_authenticated|yesno:'base.html,base_public.html' %}
+{% block title %}Annuaire des étudiants — SkillMap Madagascar{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 md:px-6 py-10">
+  <h1 class="text-2xl font-extrabold text-gray-900 mb-1">Annuaire des étudiants</h1>
+  <p class="text-gray-500 text-sm mb-6">Découvrez les talents malgaches qui ont rendu leur portfolio public.</p>
+
+  <form method="get" class="bg-white border border-gray-200 rounded-2xl p-4 mb-6 flex gap-3">
+    <input type="text" name="q" value="{{ q }}" placeholder="Filière ou université...">
+    <button type="submit" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 rounded-lg text-sm whitespace-nowrap">Rechercher</button>
+  </form>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+    {% for student in page_obj %}
+    <a href="{% url 'students:portfolio' student.slug %}" class="block bg-white border border-gray-200 hover:border-mg-green rounded-2xl p-5 transition">
+      <div class="flex items-center gap-3">
+        {% if student.photo %}<img src="{{ student.photo.url }}" class="w-12 h-12 rounded-full object-cover">{% else %}<div class="w-12 h-12 rounded-full bg-mg-green/10 text-mg-green flex items-center justify-center font-bold">{{ student.first_name|slice:":1" }}</div>{% endif %}
+        <div>
+          <p class="font-semibold text-gray-900">{{ student.full_name }}</p>
+          <p class="text-xs text-gray-400">{{ student.department }} • {{ student.get_level_display }}</p>
+        </div>
+      </div>
+      <p class="text-xs text-gray-400 mt-3">{{ student.university }}</p>
+      <div class="flex flex-wrap gap-1.5 mt-3">
+        {% for ss in student.student_skills.all|slice:":4" %}
+        <span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">{{ ss.skill.name }}</span>
+        {% endfor %}
+      </div>
+    </a>
+    {% empty %}
+    <div class="md:col-span-2 lg:col-span-3 bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Aucun profil public pour le moment.</div>
+    {% endfor %}
+  </div>
+  {% include 'partials/pagination.html' %}
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Mes expériences{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold text-gray-900 mb-6">Mes expériences</h1>
+<div class="grid lg:grid-cols-3 gap-6">
+  <div class="bg-white border border-gray-200 rounded-2xl p-6 lg:col-span-1 h-fit">
+    <p class="text-sm font-semibold text-gray-700 mb-3">Ajouter une expérience</p>
+    <form method="post" class="space-y-3">
+      {% csrf_token %}
+      <div><label class="text-xs font-medium text-gray-600">Titre</label>{{ form.title }}</div>
+      <div><label class="text-xs font-medium text-gray-600">Organisme</label>{{ form.organization }}</div>
+      <div><label class="text-xs font-medium text-gray-600">Description</label>{{ form.description }}</div>
+      <div class="grid grid-cols-2 gap-2">
+        <div><label class="text-xs font-medium text-gray-600">Début</label>{{ form.start_date }}</div>
+        <div><label class="text-xs font-medium text-gray-600">Fin</label>{{ form.end_date }}</div>
+      </div>
+      <label class="flex items-center gap-2 text-xs text-gray-600">{{ form.is_current }} En cours</label>
+      <button type="submit" class="w-full bg-mg-green hover:bg-mg-greenDark text-white font-semibold py-2 rounded-lg text-sm transition">Ajouter</button>
+    </form>
+  </div>
+  <div class="lg:col-span-2 space-y-3">
+    {% for exp in experiences %}
+    <div class="bg-white border border-gray-200 rounded-2xl p-5 flex items-start justify-between">
+      <div>
+        <p class="font-semibold text-gray-900">{{ exp.title }}</p>
+        <p class="text-sm text-gray-500">{{ exp.organization }} • {{ exp.start_date }} - {% if exp.is_current %}En cours{% else %}{{ exp.end_date|default:"—" }}{% endif %}</p>
+        {% if exp.description %}<p class="text-sm text-gray-600 mt-2">{{ exp.description }}</p>{% endif %}
+      </div>
+      <a href="{% url 'students:experience_delete' exp.pk %}" class="text-mg-red text-xs font-semibold hover:underline">Supprimer</a>
+    </div>
+    {% empty %}
+    <div class="bg-white border border-dashed border-gray-300 rounded-2xl p-10 text-center text-sm text-gray-400">Aucune expérience ajoutée pour le moment.</div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

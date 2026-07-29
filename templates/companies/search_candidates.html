@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Rechercher des talents{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold text-gray-900 mb-6">Rechercher des talents</h1>
+
+<form method="get" class="bg-white border border-gray-200 rounded-2xl p-4 mb-6 grid md:grid-cols-5 gap-3">
+  <input type="text" name="skill" value="{{ filters.skill }}" placeholder="Compétence">
+  <input type="text" name="university" value="{{ filters.university }}" placeholder="Université">
+  <input type="text" name="city" value="{{ filters.city }}" placeholder="Ville">
+  <input type="text" name="department" value="{{ filters.department }}" placeholder="Filière">
+  <div class="flex gap-2">
+    <select name="level">
+      <option value="">Niveau</option>
+      {% for value, label in level_choices %}
+      <option value="{{ value }}" {% if filters.level == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-4 rounded-lg text-sm whitespace-nowrap">Chercher</button>
+  </div>
+</form>
+
+<p class="text-sm text-gray-500 mb-3">{{ page_obj.paginator.count }} profil(s) trouvé(s), classés par pertinence</p>
+
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+  {% for student, score in page_obj %}
+  <a href="{% url 'companies:candidate_detail' student.pk %}" class="block bg-white border border-gray-200 hover:border-mg-green rounded-2xl p-5 transition">
+    <div class="flex items-center justify-between mb-2">
+      <div class="flex items-center gap-3">
+        {% if student.photo %}<img src="{{ student.photo.url }}" class="w-10 h-10 rounded-full object-cover">{% else %}<div class="w-10 h-10 rounded-full bg-mg-green/10 text-mg-green flex items-center justify-center font-bold">{{ student.first_name|slice:":1" }}</div>{% endif %}
+        <div>
+          <p class="font-semibold text-gray-900">{{ student.full_name }}</p>
+          <p class="text-xs text-gray-400">{{ student.department }} • {{ student.get_level_display }}</p>
+        </div>
+      </div>
+      <span class="text-sm font-extrabold text-mg-green">{{ score.total }}</span>
+    </div>
+    <p class="text-xs text-gray-400">{{ student.university }} • {{ student.city|default:"—" }}</p>
+    <div class="flex flex-wrap gap-1.5 mt-3">
+      {% for ss in student.student_skills.all|slice:":4" %}
+      <span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">{{ ss.skill.name }}</span>
+      {% endfor %}
+    </div>
+  </a>
+  {% empty %}
+  <div class="md:col-span-2 lg:col-span-3 bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Aucun profil ne correspond à vos critères.</div>
+  {% endfor %}
+</div>
+{% include 'partials/pagination.html' %}
+{% endblock %}

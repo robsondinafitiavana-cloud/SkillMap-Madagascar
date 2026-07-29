@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Tableau de bord — {{ student.full_name }}{% endblock %}
+{% block content %}
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+  <div>
+    <h1 class="text-2xl font-extrabold text-gray-900">Bonjour, {{ student.first_name }} 👋</h1>
+    <p class="text-gray-500 text-sm">{{ student.department }} • {{ student.get_level_display }} • {{ student.university }}</p>
+  </div>
+  <a href="{% url 'students:download_cv' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm text-center transition">📄 Télécharger mon CV</a>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+    <p class="text-xs text-gray-400 font-medium uppercase">Compétences</p>
+    <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_skills }}</p>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+    <p class="text-xs text-gray-400 font-medium uppercase">Projets</p>
+    <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_projects }}</p>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+    <p class="text-xs text-gray-400 font-medium uppercase">Certificats</p>
+    <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_certificates }}</p>
+  </div>
+  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+    <p class="text-xs text-gray-400 font-medium uppercase">Candidatures</p>
+    <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_applications }}</p>
+  </div>
+</div>
+
+<div class="grid lg:grid-cols-3 gap-6">
+  <div class="lg:col-span-1 bg-white border border-gray-200 rounded-2xl p-6">
+    <p class="text-sm font-semibold text-gray-700 mb-3">Score d'employabilité</p>
+    <div class="relative w-40 h-40 mx-auto">
+      <canvas id="scoreChart"></canvas>
+      <div class="absolute inset-0 flex flex-col items-center justify-center">
+        <span class="text-3xl font-extrabold text-mg-green">{{ score.total }}</span>
+        <span class="text-xs text-gray-400">/ 100</span>
+      </div>
+    </div>
+    <div class="mt-4 space-y-2 text-xs">
+      <div class="flex justify-between"><span class="text-gray-500">Compétences (40%)</span><span class="font-semibold">{{ score.skills_subscore }}</span></div>
+      <div class="flex justify-between"><span class="text-gray-500">Projets (25%)</span><span class="font-semibold">{{ score.projects_subscore }}</span></div>
+      <div class="flex justify-between"><span class="text-gray-500">Certificats (20%)</span><span class="font-semibold">{{ score.certificates_subscore }}</span></div>
+      <div class="flex justify-between"><span class="text-gray-500">Expériences (15%)</span><span class="font-semibold">{{ score.experiences_subscore }}</span></div>
+    </div>
+  </div>
+
+  <div class="bg-white border border-gray-200 rounded-2xl p-6">
+    <p class="text-sm font-semibold text-gray-700 mb-3">Compétences par catégorie</p>
+    <canvas id="skillsChart" height="220"></canvas>
+  </div>
+
+  <div class="bg-white border border-gray-200 rounded-2xl p-6">
+    <p class="text-sm font-semibold text-gray-700 mb-3">Mes candidatures</p>
+    <canvas id="statusChart" height="220"></canvas>
+  </div>
+</div>
+
+<div class="bg-white border border-gray-200 rounded-2xl p-6 mt-6">
+  <div class="flex items-center justify-between mb-3">
+    <p class="text-sm font-semibold text-gray-700">Notifications récentes</p>
+    <a href="{% url 'notifications:notification_list' %}" class="text-xs text-mg-green font-semibold hover:underline">Voir tout</a>
+  </div>
+  {% if recent_notifications %}
+  <ul class="divide-y divide-gray-100">
+    {% for n in recent_notifications %}
+    <li class="py-2.5 text-sm text-gray-600 flex justify-between">
+      <span>{{ n.message }}</span>
+      <span class="text-xs text-gray-400">{{ n.created_at|timesince }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="text-sm text-gray-400">Aucune notification pour le moment.</p>
+  {% endif %}
+</div>
+
+<script>
+new Chart(document.getElementById('scoreChart'), {
+  type: 'doughnut',
+  data: { datasets: [{ data: [{{ score.total }}, {{ score_remainder }}], backgroundColor: ['#007E33', '#F3F4F6'], borderWidth: 0 }] },
+  options: { cutout: '75%', plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+});
+new Chart(document.getElementById('skillsChart'), {
+  type: 'bar',
+  data: { labels: {{ skills_chart_labels|safe }}, datasets: [{ label: 'Compétences', data: {{ skills_chart_data|safe }}, backgroundColor: '#CE1126', borderRadius: 6 }] },
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+});
+new Chart(document.getElementById('statusChart'), {
+  type: 'pie',
+  data: { labels: {{ status_chart_labels|safe }}, datasets: [{ data: {{ status_chart_data|safe }}, backgroundColor: ['#F59E0B', '#007E33', '#CE1126'] }] },
+  options: { plugins: { legend: { position: 'bottom' } } }
+});
+</script>
+{% endblock %}

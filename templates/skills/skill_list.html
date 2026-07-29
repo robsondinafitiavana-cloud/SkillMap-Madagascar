@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Mes compétences{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold text-gray-900 mb-1">Mes compétences</h1>
+<p class="text-sm text-gray-500 mb-6">
+  Compétence introuvable dans la liste ?
+  <a href="{% url 'skills:skill_catalog' %}" class="text-mg-green font-semibold hover:underline">Ajoutez-la au référentiel</a>.
+</p>
+<div class="grid lg:grid-cols-3 gap-6">
+  <div class="bg-white border border-gray-200 rounded-2xl p-6 h-fit">
+    <p class="text-sm font-semibold text-gray-700 mb-3">Ajouter / mettre à jour</p>
+    <form method="post" class="space-y-3">
+      {% csrf_token %}
+      <div><label class="text-xs font-medium text-gray-600">Compétence</label>{{ form.skill }}</div>
+      <div><label class="text-xs font-medium text-gray-600">Niveau</label>{{ form.level }}</div>
+      <button type="submit" class="w-full bg-mg-green hover:bg-mg-greenDark text-white font-semibold py-2 rounded-lg text-sm transition">Enregistrer</button>
+    </form>
+  </div>
+  <div class="lg:col-span-2">
+    <div class="grid sm:grid-cols-2 gap-3">
+      {% for ss in student_skills %}
+      <div class="bg-white border border-gray-200 rounded-2xl p-4 flex items-center justify-between">
+        <div>
+          <p class="font-semibold text-gray-900">{{ ss.skill.name }}</p>
+          <p class="text-xs text-gray-400">{{ ss.skill.get_category_display }} • {{ ss.get_level_display }}</p>
+        </div>
+        <a href="{% url 'skills:skill_delete' ss.pk %}" class="text-mg-red text-xs font-semibold hover:underline">Retirer</a>
+      </div>
+      {% empty %}
+      <div class="sm:col-span-2 bg-white border border-dashed border-gray-300 rounded-2xl p-10 text-center text-sm text-gray-400">Aucune compétence ajoutée pour le moment.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

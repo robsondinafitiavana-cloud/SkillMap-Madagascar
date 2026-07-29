@@ -1,0 +1,61 @@
+{% extends 'base_public.html' %}
+{% block title %}{{ student.full_name }} — Portfolio SkillMap{% endblock %}
+{% block content %}
+<div class="bg-gradient-to-r from-mg-red via-white to-mg-green h-2"></div>
+<section class="max-w-4xl mx-auto px-4 md:px-6 py-10">
+  <div class="bg-white border border-gray-200 rounded-2xl p-8 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
+    {% if student.photo %}
+    <img src="{{ student.photo.url }}" class="w-28 h-28 rounded-full object-cover border-4 border-white shadow" alt="{{ student.full_name }}">
+    {% else %}
+    <div class="w-28 h-28 rounded-full bg-mg-green/10 text-mg-green flex items-center justify-center text-3xl font-bold">{{ student.first_name|slice:":1" }}</div>
+    {% endif %}
+    <div class="flex-1">
+      <h1 class="text-2xl font-extrabold text-gray-900">{{ student.full_name }}</h1>
+      <p class="text-gray-500">{{ student.department }} • {{ student.get_level_display }} • {{ student.university }}</p>
+      {% if student.bio %}<p class="text-gray-600 mt-3">{{ student.bio }}</p>{% endif %}
+      <div class="flex justify-center md:justify-start gap-3 mt-3 text-sm">
+        {% if student.linkedin_url %}<a href="{{ student.linkedin_url }}" class="text-mg-green font-semibold hover:underline">LinkedIn</a>{% endif %}
+        {% if student.github_url %}<a href="{{ student.github_url }}" class="text-mg-green font-semibold hover:underline">GitHub</a>{% endif %}
+      </div>
+    </div>
+    <div class="text-center bg-gray-50 rounded-2xl p-4">
+      <p class="text-3xl font-extrabold text-mg-green">{{ score.total }}</p>
+      <p class="text-xs text-gray-400 font-medium">Score /100</p>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-6 mt-6">
+    <div class="bg-white border border-gray-200 rounded-2xl p-6">
+      <h2 class="font-bold text-gray-900 mb-3">Compétences</h2>
+      <div class="flex flex-wrap gap-2">
+        {% for ss in student.student_skills.all %}
+        <span class="bg-mg-green/10 text-mg-green text-xs font-semibold px-3 py-1.5 rounded-full">{{ ss.skill.name }} · {{ ss.get_level_display }}</span>
+        {% empty %}<p class="text-sm text-gray-400">Aucune compétence renseignée.</p>{% endfor %}
+      </div>
+    </div>
+    <div class="bg-white border border-gray-200 rounded-2xl p-6">
+      <h2 class="font-bold text-gray-900 mb-3">Certificats</h2>
+      {% for c in student.certificates.all %}
+      <p class="text-sm text-gray-700 py-1.5 border-b border-gray-50 last:border-0"><b>{{ c.title }}</b> — {{ c.organization }} ({{ c.issue_date|date:"m/Y" }})</p>
+      {% empty %}<p class="text-sm text-gray-400">Aucun certificat renseigné.</p>{% endfor %}
+    </div>
+  </div>
+
+  <div class="bg-white border border-gray-200 rounded-2xl p-6 mt-6">
+    <h2 class="font-bold text-gray-900 mb-4">Projets</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      {% for p in student.projects.all %}
+      <div class="border border-gray-100 rounded-xl p-4">
+        <p class="font-semibold text-gray-900">{{ p.title }}</p>
+        <p class="text-sm text-gray-500 mt-1">{{ p.description|truncatewords:25 }}</p>
+        <p class="text-xs text-gray-400 mt-2">{{ p.technologies }}</p>
+        <div class="flex gap-3 mt-2 text-xs">
+          {% if p.github_url %}<a href="{{ p.github_url }}" class="text-mg-green font-semibold hover:underline">GitHub</a>{% endif %}
+          {% if p.demo_url %}<a href="{{ p.demo_url }}" class="text-mg-green font-semibold hover:underline">Démo</a>{% endif %}
+        </div>
+      </div>
+      {% empty %}<p class="text-sm text-gray-400">Aucun projet renseigné.</p>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

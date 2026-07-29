@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Mes candidatures{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold text-gray-900 mb-6">Mes candidatures</h1>
+<div class="space-y-3">
+  {% for a in applications %}
+  <div class="bg-white border border-gray-200 rounded-2xl p-5 flex items-center justify-between">
+    <div>
+      <p class="font-semibold text-gray-900">{{ a.job.title }}</p>
+      <p class="text-sm text-gray-500">{{ a.job.company.company_name }} • Envoyée le {{ a.applied_at|date:"d/m/Y" }}</p>
+    </div>
+    <span class="px-3 py-1.5 rounded-full text-xs font-semibold
+      {% if a.status == 'ACCEPTED' %}bg-green-50 text-mg-green
+      {% elif a.status == 'REJECTED' %}bg-red-50 text-mg-red
+      {% else %}bg-amber-50 text-amber-700{% endif %}">
+      {{ a.get_status_display }}
+    </span>
+  </div>
+  {% empty %}
+  <div class="bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Vous n'avez postulé à aucune offre pour le moment.</div>
+  {% endfor %}
+</div>
+{% endblock %}

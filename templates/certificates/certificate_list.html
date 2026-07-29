@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Mes certificats{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-extrabold text-gray-900">Mes certificats</h1>
+  <a href="{% url 'certificates:certificate_create' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">➕ Ajouter un certificat</a>
+</div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+  {% for c in certificates %}
+  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+    {% if c.image %}<img src="{{ c.image.url }}" class="h-32 w-full object-cover rounded-lg mb-3">{% endif %}
+    <p class="font-bold text-gray-900">{{ c.title }}</p>
+    <p class="text-sm text-gray-500">{{ c.organization }}</p>
+    <p class="text-xs text-gray-400 mt-1">Obtenu le {{ c.issue_date|date:"d/m/Y" }}</p>
+    <div class="flex items-center justify-between mt-3 text-xs">
+      {% if c.file %}<a href="{{ c.file.url }}" class="text-mg-green font-semibold hover:underline">Voir le PDF</a>{% else %}<span></span>{% endif %}
+      <a href="{% url 'certificates:certificate_delete' c.pk %}" class="text-mg-red font-semibold hover:underline">Supprimer</a>
+    </div>
+  </div>
+  {% empty %}
+  <div class="md:col-span-2 lg:col-span-3 bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Aucun certificat ajouté pour le moment.</div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 
+from applications.models import Application
 from students.models import StudentProfile
 from students.scoring import compute_employability_score
 from .models import CompanyProfile
@@ -14,6 +15,24 @@ def _get_company(request):
 
 
 @login_required
+def profile_view(request):
+    """Page 'Mon profil entreprise', dans le même esprit Facebook/Instagram
+    que celle des étudiants : bannière, logo, statistiques, aperçu des
+    offres, avec un accès rapide à la modification et un bouton pour voir
+    exactement ce que voit un étudiant qui consulte la fiche."""
+    company = _get_company(request)
+    jobs = company.jobs.all()
+    return render(request, 'companies/profile_view.html', {
+        'company': company,
+        'nb_jobs': jobs.count(),
+        'nb_active_jobs': jobs.filter(is_active=True).count(),
+        'nb_applications': Application.objects.filter(job__company=company).count(),
+        'nb_profiles_viewed': company.profiles_viewed_count,
+        'recent_jobs': jobs[:5],
+    })
+
+
+@login_required
 def profile_edit(request):
     company = _get_company(request)
     if request.method == 'POST':
@@ -21,7 +40,8 @@ def profile_edit(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Profil entreprise mis à jour.")
-            return redirect('companies:profile_edit')
+            # Comme sur Facebook : retour à la page de profil après modification.
+            return redirect('companies:profile_view')
     else:
         form = CompanyProfileForm(instance=company)
     return render(request, 'companies/profile_edit.html', {'form': form, 'company': company})

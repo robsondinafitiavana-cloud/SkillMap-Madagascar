@@ -5,6 +5,7 @@
       <span class="font-bold text-gray-900 text-lg">SkillMap<span class="text-mg-red">.</span> Madagascar</span>
     </a>
     <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+      <a href="{% url 'students:leaderboard' %}" class="hover:text-mg-red">🏆 Classement</a>
       <a href="{% url 'students:student_directory' %}" class="hover:text-mg-green">Étudiants</a>
       <a href="{% url 'companies:company_directory' %}" class="hover:text-mg-red">Entreprises</a>
       <a href="{% url 'jobs:job_list' %}" class="hover:text-gray-900">Offres</a>

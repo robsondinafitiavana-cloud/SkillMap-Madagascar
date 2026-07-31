@@ -14,7 +14,7 @@
     {% for company in page_obj %}
     <a href="{% url 'companies:company_public_detail' company.pk %}" class="block bg-white border border-gray-200 hover:border-mg-red rounded-2xl p-5 transition">
       <div class="flex items-center gap-3">
-        {% if company.logo %}<img src="{{ company.logo.url }}" class="w-12 h-12 rounded-xl object-cover">{% else %}<div class="w-12 h-12 rounded-xl bg-mg-red/10 text-mg-red flex items-center justify-center font-bold">{{ company.company_name|slice:":1" }}</div>{% endif %}
+        {% if company.logo %}<img src="{{ company.logo.url }}" class="w-12 h-12 rounded-xl object-cover avatar-img">{% else %}<div class="w-12 h-12 rounded-xl bg-mg-red/10 text-mg-red flex items-center justify-center font-bold">{{ company.company_name|slice:":1" }}</div>{% endif %}
         <div>
           <p class="font-semibold text-gray-900">{{ company.company_name }}</p>
           <p class="text-xs text-gray-400">{{ company.sector|default:"Secteur non renseigné" }}</p>

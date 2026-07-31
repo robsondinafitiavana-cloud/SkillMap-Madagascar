@@ -3,7 +3,7 @@
 {% block content %}
 <div class="max-w-3xl mx-auto">
   <div class="bg-white border border-gray-200 rounded-2xl p-8 flex items-start gap-6">
-    {% if student.photo %}<img src="{{ student.photo.url }}" class="w-20 h-20 rounded-full object-cover">{% else %}<div class="w-20 h-20 rounded-full bg-mg-green/10 text-mg-green flex items-center justify-center text-2xl font-bold">{{ student.first_name|slice:":1" }}</div>{% endif %}
+    {% if student.photo %}<img src="{{ student.photo.url }}" class="w-20 h-20 rounded-full object-cover avatar-img">{% else %}<div class="w-20 h-20 rounded-full bg-mg-green/10 text-mg-green flex items-center justify-center text-2xl font-bold">{{ student.first_name|slice:":1" }}</div>{% endif %}
     <div class="flex-1">
       <h1 class="text-xl font-extrabold text-gray-900">{{ student.full_name }}</h1>
       <p class="text-gray-500 text-sm">{{ student.department }} • {{ student.get_level_display }} • {{ student.university }}</p>
@@ -18,6 +18,8 @@
       <p class="text-xs text-gray-400">Score /100</p>
     </div>
   </div>
+
+  <a href="{% url 'messaging:start_with_student' student.pk %}" class="inline-block mt-4 bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">💬 Envoyer un message</a>
 
   <div class="grid md:grid-cols-2 gap-6 mt-6">
     <div class="bg-white border border-gray-200 rounded-2xl p-6">

@@ -10,7 +10,7 @@
 
     {% if user.is_student %}
     <p class="px-3 pt-4 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Mon profil</p>
-    <a href="{% url 'students:profile_edit' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">👤 Profil</a>
+    <a href="{% url 'students:profile_view' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">👤 Profil</a>
     <a href="{% url 'skills:skill_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🧠 Compétences</a>
     <a href="{% url 'projects:project_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">💼 Projets</a>
     <a href="{% url 'certificates:certificate_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🎓 Certificats</a>
@@ -23,7 +23,7 @@
 
     {% if user.is_company %}
     <p class="px-3 pt-4 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Entreprise</p>
-    <a href="{% url 'companies:profile_edit' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🏢 Profil entreprise</a>
+    <a href="{% url 'companies:profile_view' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🏢 Profil entreprise</a>
     <a href="{% url 'companies:search_candidates' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🔍 Rechercher des talents</a>
     <a href="{% url 'jobs:company_job_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">📢 Mes offres</a>
     <a href="{% url 'jobs:job_create' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">➕ Publier une offre</a>
@@ -36,10 +36,15 @@
     {% endif %}
 
     <p class="px-3 pt-4 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Annuaires</p>
+    <a href="{% url 'students:leaderboard' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🏆 Classement</a>
     <a href="{% url 'students:student_directory' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🎓 Étudiants</a>
     <a href="{% url 'companies:company_directory' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🏢 Entreprises</a>
 
     <p class="px-3 pt-4 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Compte</p>
+    <a href="{% url 'messaging:conversation_list' %}" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">
+      <span>💬 Messages</span>
+      {% if unread_messages_count > 0 %}<span class="bg-mg-red text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">{{ unread_messages_count }}</span>{% endif %}
+    </a>
     <a href="{% url 'skills:skill_catalog' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">📚 Référentiel compétences</a>
     <a href="{% url 'notifications:notification_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🔔 Notifications</a>
   </nav>

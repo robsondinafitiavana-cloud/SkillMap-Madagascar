@@ -1,0 +1,45 @@
+{% extends user.is_authenticated|yesno:'base.html,base_public.html' %}
+{% block title %}Classement des étudiants — SkillMap Madagascar{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 md:px-6 py-10">
+  <h1 class="text-2xl font-extrabold text-gray-900 mb-1">🏆 Classement des meilleurs profils</h1>
+  <p class="text-gray-500 text-sm mb-6">
+    Basé sur le score d'employabilité (compétences 40 % · projets 25 % · certificats 20 % · expériences 15 %).
+  </p>
+
+  <div class="bg-white border border-gray-200 rounded-2xl divide-y divide-gray-100">
+    {% for student, score in page_obj %}
+    <a href="{% url 'students:portfolio' student.slug %}" class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50">
+      <div class="w-10 text-center font-extrabold text-lg
+        {% if page_obj.number == 1 and forloop.counter == 1 %}text-yellow-500
+        {% elif page_obj.number == 1 and forloop.counter == 2 %}text-gray-400
+        {% elif page_obj.number == 1 and forloop.counter == 3 %}text-amber-700
+        {% else %}text-gray-300{% endif %}">
+        {% if page_obj.number == 1 and forloop.counter == 1 %}🥇
+        {% elif page_obj.number == 1 and forloop.counter == 2 %}🥈
+        {% elif page_obj.number == 1 and forloop.counter == 3 %}🥉
+        {% else %}#{{ forloop.counter0|add:page_obj.start_index }}{% endif %}
+      </div>
+
+      {% if student.photo %}<img src="{{ student.photo.url }}" class="w-11 h-11 rounded-full object-cover avatar-img">
+      {% else %}<div class="w-11 h-11 rounded-full bg-mg-green/10 text-mg-green flex items-center justify-center font-bold">{{ student.first_name|slice:":1" }}</div>{% endif %}
+
+      <div class="flex-1 min-w-0">
+        <p class="font-semibold text-gray-900 truncate">{{ student.full_name }}</p>
+        <p class="text-xs text-gray-400 truncate">{{ student.department }} • {{ student.university }}</p>
+      </div>
+
+      <div class="w-32 hidden sm:block">
+        <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-mg-red to-mg-green" style="width:{{ score.total }}%"></div>
+        </div>
+      </div>
+      <div class="w-12 text-right font-bold text-mg-green">{{ score.total }}</div>
+    </a>
+    {% empty %}
+    <div class="px-5 py-12 text-center text-sm text-gray-400">Aucun profil public pour le moment.</div>
+    {% endfor %}
+  </div>
+  {% include 'partials/pagination.html' %}
+</div>
+{% endblock %}

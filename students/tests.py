@@ -98,3 +98,66 @@ class StudentDirectoryTests(TestCase):
         response = self.client.get(reverse('students:student_directory'))
         self.assertContains(response, 'Public X')
         self.assertNotContains(response, 'Prive Y')
+
+
+class LeaderboardTests(TestCase):
+    """Vérifie que le classement respecte la confidentialité des profils
+    et affiche les étudiants triés par score décroissant."""
+
+    def test_classement_trie_par_score_decroissant(self):
+        u1 = User.objects.create_user(username='fort', password='pass1234', role='student')
+        s1 = StudentProfile.objects.create(user=u1, first_name='Fort', last_name='Score', portfolio_public=True)
+        skill = Skill.objects.create(name='Django', category='FRAMEWORK')
+        StudentSkill.objects.create(student=s1, skill=skill, level=4)
+
+        u2 = User.objects.create_user(username='faible', password='pass1234', role='student')
+        StudentProfile.objects.create(user=u2, first_name='Faible', last_name='Score', portfolio_public=True)
+
+        response = self.client.get(reverse('students:leaderboard'))
+        content = response.content.decode('utf-8')
+        self.assertLess(content.index('Fort Score'), content.index('Faible Score'))
+
+    def test_classement_ignore_les_profils_prives(self):
+        u = User.objects.create_user(username='prive_lb', password='pass1234', role='student')
+        StudentProfile.objects.create(user=u, first_name='Cache', last_name='Profil', portfolio_public=False)
+
+        response = self.client.get(reverse('students:leaderboard'))
+        self.assertNotContains(response, 'Cache Profil')
+
+
+class ProfileViewTests(TestCase):
+    """Vérifie la page 'Mon profil' façon Facebook/Instagram : accès,
+    et surtout que seul le propriétaire peut prévisualiser un portfolio
+    encore privé (les tiers ne le voient pas)."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='profil_test', password='pass1234', role='student')
+        self.student = StudentProfile.objects.create(
+            user=self.user, first_name='Sary', last_name='Tester', portfolio_public=False,
+        )
+
+    def test_page_profil_accessible_au_proprietaire(self):
+        self.client.login(username='profil_test', password='pass1234')
+        response = self.client.get(reverse('students:profile_view'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Sary Tester')
+
+    def test_proprietaire_peut_previsualiser_portfolio_prive(self):
+        self.client.login(username='profil_test', password='pass1234')
+        response = self.client.get(reverse('students:portfolio', kwargs={'slug': self.student.slug}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_tiers_ne_peut_pas_voir_portfolio_prive(self):
+        other = User.objects.create_user(username='tiers_test', password='pass1234', role='student')
+        StudentProfile.objects.create(user=other, first_name='Autre', last_name='Personne')
+        self.client.login(username='tiers_test', password='pass1234')
+        response = self.client.get(reverse('students:portfolio', kwargs={'slug': self.student.slug}))
+        self.assertEqual(response.status_code, 404)
+
+    def test_modification_redirige_vers_la_page_profil(self):
+        self.client.login(username='profil_test', password='pass1234')
+        response = self.client.post(reverse('students:profile_edit'), {
+            'first_name': 'Sary', 'last_name': 'Tester', 'university': 'Inside University',
+            'department': 'Informatique', 'level': 'L3',
+        })
+        self.assertRedirects(response, reverse('students:profile_view'))

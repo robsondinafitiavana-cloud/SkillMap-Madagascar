@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Mes messages{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-extrabold text-gray-900 mb-6">Mes messages</h1>
+
+<div class="bg-white border border-gray-200 rounded-2xl divide-y divide-gray-100">
+  {% for item in items %}
+  <a href="{% url 'messaging:conversation_detail' item.conversation.pk %}" class="flex items-center justify-between px-5 py-4 hover:bg-gray-50">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-mg-green/10 text-mg-green flex items-center justify-center font-bold">{{ item.other_name|slice:":1" }}</div>
+      <div>
+        <p class="font-semibold text-gray-900">{{ item.other_name }}</p>
+        {% if item.last_message %}
+        <p class="text-sm text-gray-500">{{ item.last_message.content|truncatechars:60 }}</p>
+        {% else %}
+        <p class="text-sm text-gray-400 italic">Aucun message pour le moment</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="text-right">
+      {% if item.last_message %}<p class="text-xs text-gray-400">{{ item.last_message.created_at|timesince }}</p>{% endif %}
+      {% if item.unread_count > 0 %}
+      <span class="inline-block mt-1 bg-mg-red text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ml-auto">{{ item.unread_count }}</span>
+      {% endif %}
+    </div>
+  </a>
+  {% empty %}
+  <div class="px-5 py-12 text-center text-sm text-gray-400">
+    Aucune conversation pour le moment. Contactez un étudiant ou une entreprise depuis son profil pour démarrer une discussion.
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

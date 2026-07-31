@@ -17,6 +17,7 @@ urlpatterns = [
     path('candidatures/', include('applications.urls')),
     path('tableau-de-bord/', include('dashboard.urls')),
     path('notifications/', include('notifications.urls')),
+    path('messages/', include('messaging.urls')),
 ]
 
 if settings.DEBUG:

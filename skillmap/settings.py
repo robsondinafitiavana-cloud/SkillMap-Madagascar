@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'applications',
     'dashboard',
     'notifications',
+    'messaging',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -79,6 +80,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'notifications.context_processors.unread_notifications',
+                'messaging.context_processors.unread_messages',
             ],
         },
     },

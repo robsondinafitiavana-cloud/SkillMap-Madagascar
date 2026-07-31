@@ -14,7 +14,7 @@
     {% for student in page_obj %}
     <a href="{% url 'students:portfolio' student.slug %}" class="block bg-white border border-gray-200 hover:border-mg-green rounded-2xl p-5 transition">
       <div class="flex items-center gap-3">
-        {% if student.photo %}<img src="{{ student.photo.url }}" class="w-12 h-12 rounded-full object-cover">{% else %}<div class="w-12 h-12 rounded-full bg-mg-green/10 text-mg-green flex items-center justify-center font-bold">{{ student.first_name|slice:":1" }}</div>{% endif %}
+        {% if student.photo %}<img src="{{ student.photo.url }}" class="w-12 h-12 rounded-full object-cover avatar-img">{% else %}<div class="w-12 h-12 rounded-full bg-mg-green/10 text-mg-green flex items-center justify-center font-bold">{{ student.first_name|slice:":1" }}</div>{% endif %}
         <div>
           <p class="font-semibold text-gray-900">{{ student.full_name }}</p>
           <p class="text-xs text-gray-400">{{ student.department }} • {{ student.get_level_display }}</p>

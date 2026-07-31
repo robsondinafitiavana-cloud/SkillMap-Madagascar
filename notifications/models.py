@@ -9,6 +9,7 @@ class Notification(models.Model):
         ('PROFILE_VALIDATED', 'Profil validé'),
         ('JOB_EXPIRED', 'Offre expirée'),
         ('APPLICATION_STATUS', 'Statut de candidature mis à jour'),
+        ('NEW_MESSAGE', 'Nouveau message'),
     ]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications')
     notif_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='NEW_JOB')

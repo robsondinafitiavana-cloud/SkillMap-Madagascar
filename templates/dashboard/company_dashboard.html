@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}Tableau de bord — {{ company.company_name }}{% endblock %}
+{% load icons %}
 {% block content %}
 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
   <div>
-    <h1 class="text-2xl font-extrabold text-gray-900">{{ company.company_name }} 🏢</h1>
+    <h1 class="text-2xl font-extrabold text-gray-900 flex items-center gap-2">{{ company.company_name }} {% icon "building-office" "w-6 h-6 text-mg-red" %}</h1>
     <p class="text-gray-500 text-sm">{{ company.sector|default:"Secteur non renseigné" }} • {{ company.city|default:"Madagascar" }}</p>
   </div>
   <div class="flex gap-3">
-    <a href="{% url 'companies:search_candidates' %}" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">🔍 Rechercher des talents</a>
-    <a href="{% url 'jobs:job_create' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">➕ Publier une offre</a>
+    <a href="{% url 'companies:search_candidates' %}" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">{% icon "magnifying-glass" "w-4 h-4 inline -mt-0.5" %} Rechercher des talents</a>
+    <a href="{% url 'jobs:job_create' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">{% icon "plus" "w-4 h-4 inline -mt-0.5" %} Publier une offre</a>
   </div>
 </div>
 

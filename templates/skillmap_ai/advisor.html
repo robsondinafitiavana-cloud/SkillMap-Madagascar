@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% block title %}Conseiller de carrière IA{% endblock %}
+{% load icons %}
+{% block content %}
+<div class="max-w-5xl mx-auto">
+
+  <div class="mb-6">
+    <h1 class="text-2xl font-extrabold text-gray-900 flex items-center gap-2">{% icon "sparkles" "w-6 h-6 text-mg-green" %} Conseiller de carrière IA</h1>
+    <p class="text-gray-500 text-sm mt-1">
+      Analyse automatique de ton profil pour identifier les métiers qui te correspondent le mieux
+      et le plan d'apprentissage pour y arriver.
+    </p>
+  </div>
+
+  <!-- Explication en langage naturel -->
+  <div class="bg-gradient-to-r from-mg-red/5 via-white to-mg-green/5 border border-gray-200 rounded-2xl p-6 mb-6">
+    <p class="text-gray-700 leading-relaxed">{{ explanation }}</p>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-6">
+
+    <!-- Radar de compétences -->
+    <div class="bg-white border border-gray-200 rounded-2xl p-6">
+      <p class="text-sm font-semibold text-gray-700 mb-3">Radar de compétences</p>
+      {% if radar_labels|length > 2 %}
+      <canvas id="radarChart" height="220"></canvas>
+      {% else %}
+      <p class="text-sm text-gray-400">Ajoute des compétences dans au moins 3 catégories différentes pour afficher le radar.</p>
+      {% endif %}
+    </div>
+
+    <!-- Top 5 métiers recommandés -->
+    <div class="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6">
+      <p class="text-sm font-semibold text-gray-700 mb-3">Top métiers recommandés</p>
+      <div class="space-y-3">
+        {% for m in top_matches %}
+        <div class="border border-gray-100 rounded-xl p-4">
+          <div class="flex items-center justify-between mb-2">
+            <p class="font-semibold text-gray-900">{{ forloop.counter }}. {{ m.career.name }}</p>
+            <span class="text-sm font-extrabold {% if m.percent >= 70 %}text-mg-green{% elif m.percent >= 40 %}text-amber-600{% else %}text-gray-400{% endif %}">{{ m.percent }} %</span>
+          </div>
+          <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
+            <div class="h-full bg-gradient-to-r from-mg-red to-mg-green" style="width:{{ m.percent }}%"></div>
+          </div>
+          <p class="text-xs text-gray-400">{{ m.career.domain }} • {{ m.career.recommended_level }} • {{ m.career.average_salary }}</p>
+          {% if m.matched_required %}
+          <p class="text-xs text-mg-green mt-2">{% icon "check" "w-3.5 h-3.5 inline text-mg-green" %} Points forts : {% for s in m.matched_required %}{{ s.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+          {% endif %}
+          {% if m.missing_required %}
+          <p class="text-xs text-gray-500 mt-1">À apprendre : {% for s in m.missing_required %}{{ s.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if other_matches %}
+      <details class="mt-4">
+        <summary class="text-xs text-gray-400 cursor-pointer hover:text-gray-600">Voir les {{ other_matches|length }} autres métiers analysés</summary>
+        <div class="mt-3 space-y-1.5">
+          {% for m in other_matches %}
+          <div class="flex items-center justify-between text-xs text-gray-500 py-1 border-b border-gray-50 last:border-0">
+            <span>{{ m.career.name }}</span>
+            <span class="font-semibold">{{ m.percent }} %</span>
+          </div>
+          {% endfor %}
+        </div>
+      </details>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Plan de progression -->
+  {% if roadmap %}
+  <div class="bg-white border border-gray-200 rounded-2xl p-6 mt-6">
+    <p class="text-sm font-semibold text-gray-700 mb-1 flex items-center gap-2">{% icon "map" "w-4 h-4" %} Plan de progression vers {{ roadmap.target_career.name }}</p>
+    {% if roadmap.already_ready %}
+    <p class="text-sm text-mg-green mt-3 flex items-center gap-2">{% icon "check-circle" "w-5 h-5" %} Tu maîtrises déjà toutes les compétences clés pour ce métier !</p>
+    {% else %}
+    <div class="flex flex-wrap gap-4 mt-4">
+      {% for step in roadmap.steps %}
+      <div class="flex-1 min-w-[140px] border border-gray-100 rounded-xl p-4 text-center">
+        <p class="text-xs font-semibold text-mg-red uppercase mb-2">Étape {{ step.step_number }}</p>
+        {% for s in step.skills %}
+        <p class="text-sm text-gray-700">{{ s.name }}</p>
+        {% endfor %}
+      </div>
+      {% if not forloop.last %}<div class="flex items-center text-gray-300">{% icon "arrow-right" "w-5 h-5" %}</div>{% endif %}
+      {% endfor %}
+      <div class="flex-1 min-w-[140px] border border-mg-green/30 bg-mg-green/5 rounded-xl p-4 text-center">
+        <p class="text-xs font-semibold text-mg-green uppercase mb-2">Objectif</p>
+        <p class="text-sm font-semibold text-gray-900">{{ roadmap.target_career.name }}</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Simulateur d'évolution -->
+  <div class="bg-white border border-gray-200 rounded-2xl p-6 mt-6 mb-10">
+    <p class="text-sm font-semibold text-gray-700 mb-1 flex items-center gap-2">{% icon "sparkles" "w-4 h-4" %} Simuler mon évolution</p>
+    <p class="text-xs text-gray-400 mb-4">Coche ce que tu envisages d'apprendre et regarde l'effet estimé sur ton score d'employabilité.</p>
+
+    {% if simulable_skills %}
+    <div class="flex flex-wrap gap-2 mb-4">
+      {% for s in simulable_skills %}
+      <label class="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-mg-green">
+        <input type="checkbox" class="sim-skill-checkbox" value="{{ s.id }}"> {{ s.name }}
+      </label>
+      {% endfor %}
+      <label class="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-mg-green">
+        <input type="checkbox" id="sim-add-project"> + 1 nouveau projet
+      </label>
+    </div>
+    <button id="sim-run-btn" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">Simuler mon évolution</button>
+
+    <div id="sim-result" class="hidden mt-5">
+      <div class="flex items-center gap-4">
+        <div class="text-center">
+          <p class="text-2xl font-extrabold text-gray-400" id="sim-before">-</p>
+          <p class="text-xs text-gray-400">Score actuel</p>
+        </div>
+        <div class="text-gray-300">{% icon "arrow-right" "w-5 h-5" %}</div>
+        <div class="text-center">
+          <p class="text-2xl font-extrabold text-mg-green" id="sim-after">-</p>
+          <p class="text-xs text-gray-400">Score estimé</p>
+        </div>
+        <div class="text-center">
+          <p class="text-2xl font-extrabold text-mg-red" id="sim-gain">-</p>
+          <p class="text-xs text-gray-400">Gain estimé</p>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <p class="text-sm text-gray-400">Tu maîtrises déjà toutes les compétences du métier le mieux classé — rien à simuler pour l'instant !</p>
+    {% endif %}
+  </div>
+
+</div>
+
+<script>
+{% if radar_labels|length > 2 %}
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: {{ radar_labels|safe }},
+    datasets: [{
+      label: 'Niveau moyen (sur 4)',
+      data: {{ radar_data|safe }},
+      backgroundColor: 'rgba(0, 126, 51, 0.15)',
+      borderColor: '#007E33',
+      pointBackgroundColor: '#CE1126',
+    }],
+  },
+  options: { scales: { r: { min: 0, max: 4, ticks: { stepSize: 1 } } }, plugins: { legend: { display: false } } },
+});
+{% endif %}
+
+(function () {
+  const runBtn = document.getElementById('sim-run-btn');
+  if (!runBtn) return;
+  const csrfToken = "{{ csrf_token }}";
+
+  runBtn.addEventListener('click', async function () {
+    const skillIds = Array.from(document.querySelectorAll('.sim-skill-checkbox:checked')).map(cb => cb.value);
+    const addProject = document.getElementById('sim-add-project').checked;
+
+    runBtn.disabled = true;
+    runBtn.textContent = 'Calcul en cours...';
+    try {
+      const res = await fetch("{% url 'skillmap_ai:simulate_api' %}", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+        body: JSON.stringify({ skill_ids: skillIds, add_project: addProject }),
+      });
+      const data = await res.json();
+      document.getElementById('sim-before').textContent = data.before;
+      document.getElementById('sim-after').textContent = data.after;
+      document.getElementById('sim-gain').textContent = '+' + data.gain;
+      document.getElementById('sim-result').classList.remove('hidden');
+    } finally {
+      runBtn.disabled = false;
+      runBtn.textContent = 'Simuler mon évolution';
+    }
+  });
+})();
+</script>
+{% endblock %}

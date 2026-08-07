@@ -1,3 +1,4 @@
+{% load icons %}
 <aside class="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-white border-r border-gray-200 z-30">
   <div class="h-16 flex items-center gap-2 px-5 border-b border-gray-100">
     <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-mg-red to-mg-green flex items-center justify-center text-white font-bold text-sm">SM</div>
@@ -5,53 +6,54 @@
   </div>
   <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1 text-sm">
     <a href="{% url 'dashboard:home' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium {% if request.resolver_match.url_name == 'home' %}bg-mg-green/10 text-mg-green{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
-      <span>🏠</span> Tableau de bord
+      {% icon "home" "w-5 h-5" %} Tableau de bord
     </a>
 
     {% if user.is_student %}
     <p class="px-3 pt-4 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Mon profil</p>
-    <a href="{% url 'students:profile_view' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">👤 Profil</a>
-    <a href="{% url 'skills:skill_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🧠 Compétences</a>
-    <a href="{% url 'projects:project_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">💼 Projets</a>
-    <a href="{% url 'certificates:certificate_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🎓 Certificats</a>
-    <a href="{% url 'students:experience_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🧳 Expériences</a>
-    <a href="{% url 'students:download_cv' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">📄 Télécharger CV</a>
+    <a href="{% url 'students:profile_view' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "user" "w-5 h-5" %} Profil</a>
+    <a href="{% url 'skills:skill_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "light-bulb" "w-5 h-5" %} Compétences</a>
+    <a href="{% url 'projects:project_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "briefcase" "w-5 h-5" %} Projets</a>
+    <a href="{% url 'certificates:certificate_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "academic-cap" "w-5 h-5" %} Certificats</a>
+    <a href="{% url 'students:experience_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "clock" "w-5 h-5" %} Expériences</a>
+    <a href="{% url 'students:download_cv' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "document-text" "w-5 h-5" %} Télécharger CV</a>
+    <a href="{% url 'skillmap_ai:advisor' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium bg-gradient-to-r from-mg-red/10 to-mg-green/10 text-gray-700 hover:from-mg-red/20 hover:to-mg-green/20">{% icon "sparkles" "w-5 h-5" %} Conseiller de carrière IA</a>
     <p class="px-3 pt-4 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Opportunités</p>
-    <a href="{% url 'jobs:job_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🔎 Offres d'emploi</a>
-    <a href="{% url 'applications:my_applications' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">📨 Mes candidatures</a>
+    <a href="{% url 'jobs:job_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "magnifying-glass" "w-5 h-5" %} Offres d'emploi</a>
+    <a href="{% url 'applications:my_applications' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "inbox" "w-5 h-5" %} Mes candidatures</a>
     {% endif %}
 
     {% if user.is_company %}
     <p class="px-3 pt-4 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Entreprise</p>
-    <a href="{% url 'companies:profile_view' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🏢 Profil entreprise</a>
-    <a href="{% url 'companies:search_candidates' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🔍 Rechercher des talents</a>
-    <a href="{% url 'jobs:company_job_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">📢 Mes offres</a>
-    <a href="{% url 'jobs:job_create' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">➕ Publier une offre</a>
+    <a href="{% url 'companies:profile_view' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "building-office" "w-5 h-5" %} Profil entreprise</a>
+    <a href="{% url 'companies:search_candidates' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "magnifying-glass" "w-5 h-5" %} Rechercher des talents</a>
+    <a href="{% url 'jobs:company_job_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "megaphone" "w-5 h-5" %} Mes offres</a>
+    <a href="{% url 'jobs:job_create' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "plus" "w-5 h-5" %} Publier une offre</a>
     {% endif %}
 
     {% if user.is_admin_role or user.is_superuser %}
     <p class="px-3 pt-4 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Administration</p>
-    <a href="{% url 'dashboard:admin_dashboard' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">📊 Statistiques</a>
-    <a href="/admin/" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">⚙️ Administration Django</a>
+    <a href="{% url 'dashboard:admin_dashboard' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "chart-bar" "w-5 h-5" %} Statistiques</a>
+    <a href="/admin/" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "cog" "w-5 h-5" %} Administration Django</a>
     {% endif %}
 
     <p class="px-3 pt-4 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Annuaires</p>
-    <a href="{% url 'students:leaderboard' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🏆 Classement</a>
-    <a href="{% url 'students:student_directory' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🎓 Étudiants</a>
-    <a href="{% url 'companies:company_directory' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🏢 Entreprises</a>
+    <a href="{% url 'students:leaderboard' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "trophy" "w-5 h-5" %} Classement</a>
+    <a href="{% url 'students:student_directory' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "academic-cap" "w-5 h-5" %} Étudiants</a>
+    <a href="{% url 'companies:company_directory' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "building-office" "w-5 h-5" %} Entreprises</a>
 
     <p class="px-3 pt-4 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Compte</p>
     <a href="{% url 'messaging:conversation_list' %}" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">
-      <span>💬 Messages</span>
+      <span class="flex items-center gap-3">{% icon "chat-bubble" "w-5 h-5" %} Messages</span>
       {% if unread_messages_count > 0 %}<span class="bg-mg-red text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">{{ unread_messages_count }}</span>{% endif %}
     </a>
-    <a href="{% url 'skills:skill_catalog' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">📚 Référentiel compétences</a>
-    <a href="{% url 'notifications:notification_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">🔔 Notifications</a>
+    <a href="{% url 'skills:skill_catalog' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "book-open" "w-5 h-5" %} Référentiel compétences</a>
+    <a href="{% url 'notifications:notification_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100">{% icon "bell" "w-5 h-5" %} Notifications</a>
   </nav>
   <div class="p-3 border-t border-gray-100">
     <form action="{% url 'accounts:logout' %}" method="post">
       {% csrf_token %}
-      <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-red-50 hover:text-mg-red text-sm font-medium">🚪 Déconnexion</button>
+      <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-red-50 hover:text-mg-red text-sm font-medium">{% icon "logout" "w-5 h-5" %} Déconnexion</button>
     </form>
   </div>
 </aside>

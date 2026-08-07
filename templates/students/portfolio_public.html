@@ -1,11 +1,12 @@
 {% extends user.is_authenticated|yesno:'base.html,base_public.html' %}
 {% block title %}{{ student.full_name }} — Portfolio SkillMap{% endblock %}
+{% load icons %}
 {% block content %}
 <div class="bg-gradient-to-r from-mg-red via-white to-mg-green h-2"></div>
 <section class="max-w-4xl mx-auto px-4 md:px-6 py-10">
   {% if is_owner and not student.portfolio_public %}
   <div class="bg-amber-50 border border-amber-200 text-amber-700 text-sm font-medium px-4 py-3 rounded-lg mb-6">
-    🔒 Aperçu uniquement — ce portfolio n'est pas encore public. Les entreprises ne peuvent pas le voir tant que tu n'as pas activé "portfolio public" dans <a href="{% url 'students:profile_edit' %}" class="underline font-semibold">Modifier le profil</a>.
+    {% icon "lock-closed" "w-4 h-4 inline -mt-0.5" %} Aperçu uniquement — ce portfolio n'est pas encore public. Les entreprises ne peuvent pas le voir tant que tu n'as pas activé "portfolio public" dans <a href="{% url 'students:profile_edit' %}" class="underline font-semibold">Modifier le profil</a>.
   </div>
   {% endif %}
   <div class="bg-white border border-gray-200 rounded-2xl p-8 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
@@ -30,7 +31,7 @@
   </div>
 
   {% if user.is_authenticated and user.is_company %}
-  <a href="{% url 'messaging:start_with_student' student.pk %}" class="inline-block mt-4 bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">💬 Envoyer un message</a>
+  <a href="{% url 'messaging:start_with_student' student.pk %}" class="inline-block mt-4 bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">{% icon "chat-bubble" "w-4 h-4 inline -mt-0.5" %} Envoyer un message</a>
   {% endif %}
 
   <div class="grid md:grid-cols-2 gap-6 mt-6">

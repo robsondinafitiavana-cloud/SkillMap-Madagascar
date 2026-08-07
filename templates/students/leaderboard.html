@@ -1,8 +1,9 @@
 {% extends user.is_authenticated|yesno:'base.html,base_public.html' %}
 {% block title %}Classement des étudiants — SkillMap Madagascar{% endblock %}
+{% load icons %}
 {% block content %}
 <div class="max-w-4xl mx-auto px-4 md:px-6 py-10">
-  <h1 class="text-2xl font-extrabold text-gray-900 mb-1">🏆 Classement des meilleurs profils</h1>
+  <h1 class="text-2xl font-extrabold text-gray-900 mb-1 flex items-center gap-2">{% icon "trophy" "w-6 h-6 text-mg-red" %} Classement des meilleurs profils</h1>
   <p class="text-gray-500 text-sm mb-6">
     Basé sur le score d'employabilité (compétences 40 % · projets 25 % · certificats 20 % · expériences 15 %).
   </p>
@@ -10,15 +11,12 @@
   <div class="bg-white border border-gray-200 rounded-2xl divide-y divide-gray-100">
     {% for student, score in page_obj %}
     <a href="{% url 'students:portfolio' student.slug %}" class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50">
-      <div class="w-10 text-center font-extrabold text-lg
-        {% if page_obj.number == 1 and forloop.counter == 1 %}text-yellow-500
-        {% elif page_obj.number == 1 and forloop.counter == 2 %}text-gray-400
-        {% elif page_obj.number == 1 and forloop.counter == 3 %}text-amber-700
-        {% else %}text-gray-300{% endif %}">
-        {% if page_obj.number == 1 and forloop.counter == 1 %}🥇
-        {% elif page_obj.number == 1 and forloop.counter == 2 %}🥈
-        {% elif page_obj.number == 1 and forloop.counter == 3 %}🥉
-        {% else %}#{{ forloop.counter0|add:page_obj.start_index }}{% endif %}
+      <div class="w-9 h-9 flex-shrink-0 rounded-full flex items-center justify-center font-extrabold text-sm
+        {% if page_obj.number == 1 and forloop.counter == 1 %}bg-yellow-400 text-white
+        {% elif page_obj.number == 1 and forloop.counter == 2 %}bg-gray-300 text-white
+        {% elif page_obj.number == 1 and forloop.counter == 3 %}bg-amber-600 text-white
+        {% else %}bg-gray-100 text-gray-400{% endif %}">
+        {{ forloop.counter0|add:page_obj.start_index }}
       </div>
 
       {% if student.photo %}<img src="{{ student.photo.url }}" class="w-11 h-11 rounded-full object-cover avatar-img">

@@ -11,6 +11,12 @@ Chaque catégorie est plafonnée à un nombre de référence ("cible") au-delà
 duquel elle est considérée comme complète (100 % de la sous-note), afin
 d'éviter qu'un profil avec 50 compétences n'écrase artificiellement les
 autres critères.
+
+La logique de calcul pure (compute_score_from_counts) est séparée de la
+lecture des données en base (compute_employability_score) : cela permet de
+réutiliser exactement la même formule ailleurs — notamment dans le module
+skillmap_ai pour simuler "et si j'apprenais telle compétence en plus ?"
+sans dupliquer les règles de calcul ni toucher à la base de données.
 """
 
 # Cibles utilisées pour ramener chaque catégorie à une note sur 100
@@ -32,25 +38,16 @@ def _capped_ratio(count, target):
     return min(count / target, 1.0)
 
 
-def compute_employability_score(student):
-    """Retourne un dict avec le score global (/100) et le détail par catégorie."""
-    student_skills = list(student.student_skills.all())
-    nb_skills = len(student_skills)
-    avg_level = (
-        sum(s.level for s in student_skills) / nb_skills if nb_skills else 0
-    )
-    # La sous-note compétences combine le nombre de compétences (70%) et leur niveau moyen (30%)
+def compute_score_from_counts(nb_skills, avg_level, nb_projects, nb_certificates, nb_experiences):
+    """Applique la formule du score d'employabilité à des chiffres déjà
+    connus (plutôt qu'à un objet StudentProfile). C'est cette fonction que
+    réutilise le simulateur d'évolution du conseiller de carrière IA."""
     skills_count_ratio = _capped_ratio(nb_skills, TARGET_SKILLS)
     skills_level_ratio = _capped_ratio(avg_level, TARGET_SKILL_LEVEL_BONUS)
     skills_subscore = (0.7 * skills_count_ratio + 0.3 * skills_level_ratio) * 100
 
-    nb_projects = student.projects.count()
     projects_subscore = _capped_ratio(nb_projects, TARGET_PROJECTS) * 100
-
-    nb_certificates = student.certificates.count()
     certificates_subscore = _capped_ratio(nb_certificates, TARGET_CERTIFICATES) * 100
-
-    nb_experiences = student.experiences.count()
     experiences_subscore = _capped_ratio(nb_experiences, TARGET_EXPERIENCES) * 100
 
     total = (
@@ -71,3 +68,19 @@ def compute_employability_score(student):
         'nb_certificates': nb_certificates,
         'nb_experiences': nb_experiences,
     }
+
+
+def compute_employability_score(student):
+    """Retourne un dict avec le score global (/100) et le détail par catégorie."""
+    student_skills = list(student.student_skills.all())
+    nb_skills = len(student_skills)
+    avg_level = (
+        sum(s.level for s in student_skills) / nb_skills if nb_skills else 0
+    )
+    return compute_score_from_counts(
+        nb_skills=nb_skills,
+        avg_level=avg_level,
+        nb_projects=student.projects.count(),
+        nb_certificates=student.certificates.count(),
+        nb_experiences=student.experiences.count(),
+    )

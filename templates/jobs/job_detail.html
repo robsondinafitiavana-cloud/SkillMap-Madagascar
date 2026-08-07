@@ -1,5 +1,6 @@
 {% extends user.is_authenticated|yesno:'base.html,base_public.html' %}
 {% block title %}{{ job.title }}{% endblock %}
+{% load icons %}
 {% block content %}
 <div class="max-w-3xl mx-auto px-4 md:px-6 py-8">
   <div class="bg-white border border-gray-200 rounded-2xl p-8">
@@ -12,8 +13,8 @@
     </div>
 
     <div class="flex gap-6 mt-4 text-sm text-gray-500">
-      {% if job.salary %}<span>💰 {{ job.salary }}</span>{% endif %}
-      <span>⏳ Date limite : {{ job.deadline }}</span>
+      {% if job.salary %}<span>{% icon "banknotes" "w-4 h-4 inline -mt-0.5" %} {{ job.salary }}</span>{% endif %}
+      <span>{% icon "clock" "w-4 h-4 inline -mt-0.5" %} Date limite : {{ job.deadline }}</span>
     </div>
 
     <div class="prose prose-sm max-w-none text-gray-700 mt-6 whitespace-pre-line">{{ job.description }}</div>
@@ -31,7 +32,7 @@
 
     {% if user.is_authenticated and user.is_student %}
       {% if already_applied %}
-      <div class="mt-8 bg-green-50 text-mg-green text-sm font-semibold px-4 py-3 rounded-lg">✅ Vous avez déjà postulé à cette offre.</div>
+      <div class="mt-8 bg-green-50 text-mg-green text-sm font-semibold px-4 py-3 rounded-lg flex items-center gap-2">{% icon "check-circle" "w-5 h-5" %} Vous avez déjà postulé à cette offre.</div>
       {% else %}
       <a href="{% url 'applications:apply_to_job' job.pk %}" class="inline-block mt-8 bg-mg-red hover:bg-mg-redDark text-white font-semibold px-6 py-3 rounded-lg transition">Postuler à cette offre</a>
       {% endif %}

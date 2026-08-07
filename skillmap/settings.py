@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'dashboard',
     'notifications',
     'messaging',
+    'skillmap_ai',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -158,6 +159,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'dashboard:home'
 LOGOUT_REDIRECT_URL = 'accounts:login'
+
+# IA locale (Ollama) — voir OLLAMA_SETUP.md. Aucune clé API, tout tourne
+# sur cette machine. Configurable via .env si besoin (ex. un autre modèle).
+OLLAMA_URL = config('OLLAMA_URL', default='http://localhost:11434/api/generate')
+OLLAMA_MODEL = config('OLLAMA_MODEL', default='llama3.2')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

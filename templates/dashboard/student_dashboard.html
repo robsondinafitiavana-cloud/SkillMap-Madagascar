@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% block title %}Tableau de bord — {{ student.full_name }}{% endblock %}
+{% load icons %}
 {% block content %}
 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
   <div>
-    <h1 class="text-2xl font-extrabold text-gray-900">Bonjour, {{ student.first_name }} 👋</h1>
+    <h1 class="text-2xl font-extrabold text-gray-900">Bonjour, {{ student.first_name }}</h1>
     <p class="text-gray-500 text-sm">{{ student.department }} • {{ student.get_level_display }} • {{ student.university }}</p>
   </div>
-  <a href="{% url 'students:download_cv' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm text-center transition">📄 Télécharger mon CV</a>
+  <a href="{% url 'students:download_cv' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm text-center transition">{% icon "document-text" "w-4 h-4 inline -mt-0.5" %} Télécharger mon CV</a>
 </div>
 
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">

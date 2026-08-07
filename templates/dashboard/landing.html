@@ -5,7 +5,8 @@
   <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-mg-red via-white to-mg-green"></div>
   <div class="max-w-7xl mx-auto px-4 md:px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
     <div>
-      <span class="inline-block bg-mg-green/10 text-mg-green text-xs font-semibold px-3 py-1 rounded-full mb-4">🇲🇬 Fait à Madagascar</span>
+      {% load icons %}
+      <span class="inline-flex items-center gap-1.5 bg-mg-green/10 text-mg-green text-xs font-semibold px-3 py-1 rounded-full mb-4">{% icon "flag" "w-3.5 h-3.5" %} Fait à Madagascar</span>
       <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
         La cartographie des compétences qui connecte <span class="text-mg-red">étudiants</span> et <span class="text-mg-green">entreprises</span>
       </h1>

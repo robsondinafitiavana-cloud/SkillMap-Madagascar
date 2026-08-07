@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}{{ student.full_name }}{% endblock %}
+{% load icons %}
 {% block content %}
 <div class="max-w-3xl mx-auto">
   <div class="bg-white border border-gray-200 rounded-2xl p-8 flex items-start gap-6">
@@ -9,8 +10,8 @@
       <p class="text-gray-500 text-sm">{{ student.department }} • {{ student.get_level_display }} • {{ student.university }}</p>
       {% if student.bio %}<p class="text-gray-600 text-sm mt-3">{{ student.bio }}</p>{% endif %}
       <div class="flex gap-3 mt-2 text-xs">
-        {% if student.user.email %}<span class="text-gray-500">✉️ {{ student.user.email }}</span>{% endif %}
-        {% if student.phone %}<span class="text-gray-500">📞 {{ student.phone }}</span>{% endif %}
+        {% if student.user.email %}<span class="text-gray-500">{% icon "envelope" "w-4 h-4 inline -mt-0.5" %} {{ student.user.email }}</span>{% endif %}
+        {% if student.phone %}<span class="text-gray-500">{% icon "phone" "w-4 h-4 inline -mt-0.5" %} {{ student.phone }}</span>{% endif %}
       </div>
     </div>
     <div class="text-center bg-gray-50 rounded-2xl p-4">
@@ -19,7 +20,7 @@
     </div>
   </div>
 
-  <a href="{% url 'messaging:start_with_student' student.pk %}" class="inline-block mt-4 bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">💬 Envoyer un message</a>
+  <a href="{% url 'messaging:start_with_student' student.pk %}" class="inline-block mt-4 bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">{% icon "chat-bubble" "w-4 h-4 inline -mt-0.5" %} Envoyer un message</a>
 
   <div class="grid md:grid-cols-2 gap-6 mt-6">
     <div class="bg-white border border-gray-200 rounded-2xl p-6">

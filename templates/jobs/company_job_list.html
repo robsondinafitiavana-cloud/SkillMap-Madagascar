@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Mes offres{% endblock %}
+{% load icons %}
 {% block content %}
 <div class="flex items-center justify-between mb-6">
   <h1 class="text-2xl font-extrabold text-gray-900">Mes offres</h1>
-  <a href="{% url 'jobs:job_create' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">➕ Publier une offre</a>
+  <a href="{% url 'jobs:job_create' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">{% icon "plus" "w-4 h-4 inline -mt-0.5" %} Publier une offre</a>
 </div>
 <div class="space-y-4">
   {% for job in jobs %}

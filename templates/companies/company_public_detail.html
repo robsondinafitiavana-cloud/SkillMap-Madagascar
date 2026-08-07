@@ -1,5 +1,6 @@
 {% extends user.is_authenticated|yesno:'base.html,base_public.html' %}
 {% block title %}{{ company.company_name }} — SkillMap Madagascar{% endblock %}
+{% load icons %}
 {% block content %}
 <div class="max-w-3xl mx-auto px-4 md:px-6 py-10">
   <div class="bg-white border border-gray-200 rounded-2xl p-8 flex items-start gap-6">
@@ -10,10 +11,10 @@
       {% if company.description %}<p class="text-gray-600 text-sm mt-3">{{ company.description }}</p>{% endif %}
       <div class="flex gap-3 mt-2 text-xs">
         {% if company.website %}<a href="{{ company.website }}" class="text-mg-green font-semibold hover:underline">Site web</a>{% endif %}
-        {% if company.phone %}<span class="text-gray-500">📞 {{ company.phone }}</span>{% endif %}
+        {% if company.phone %}<span class="text-gray-500">{% icon "phone" "w-4 h-4 inline -mt-0.5" %} {{ company.phone }}</span>{% endif %}
       </div>
       {% if user.is_authenticated and user.is_student %}
-      <a href="{% url 'messaging:start_with_company' company.pk %}" class="inline-block mt-3 bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2 rounded-lg text-sm transition">💬 Envoyer un message</a>
+      <a href="{% url 'messaging:start_with_company' company.pk %}" class="inline-block mt-3 bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2 rounded-lg text-sm transition">{% icon "chat-bubble" "w-4 h-4 inline -mt-0.5" %} Envoyer un message</a>
       {% endif %}
     </div>
   </div>

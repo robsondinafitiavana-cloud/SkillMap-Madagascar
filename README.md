@@ -124,3 +124,80 @@ seulement "codé à la main" — le jury apprécie généralement de voir des te
   entreprise — peut y ajouter une compétence manquante ; elle devient alors
   immédiatement disponible pour tout le monde (anti-doublon automatique,
   insensible à la casse).
+
+## Messagerie étudiant ↔ entreprise (quasi temps réel)
+
+Une entreprise peut contacter un étudiant depuis sa fiche candidat ou son
+portfolio public, et un étudiant peut contacter une entreprise depuis sa
+fiche publique. La discussion se fait dans `/messages/`.
+
+**Fonctionnement technique** : plutôt que des WebSockets (qui demanderaient
+Django Channels + un serveur Redis, plus complexes à faire fonctionner de
+façon fiable), la messagerie utilise un rafraîchissement automatique en
+JavaScript (`fetch` toutes les 4 secondes) qui interroge une petite API JSON
+Django. C'est beaucoup plus simple à expliquer et à faire tourner de façon
+fiable pour un projet académique, tout en donnant une vraie sensation de
+messagerie instantanée. Le code du polling est commenté dans
+`templates/messaging/conversation_detail.html` et `messaging/views.py`.
+
+## Données de démonstration et classement
+
+**Jeu de données de démo** — pour présenter la plateforme déjà remplie
+(dashboards, classement, annuaires) sans créer les comptes à la main :
+
+```bash
+python manage.py seed_demo            # crée 15 étudiants, 5 entreprises,
+                                        # des offres, candidatures et messages
+python manage.py seed_demo --clear     # supprime uniquement les comptes de
+                                        # démo (préfixe "demo_"), sans toucher
+                                        # aux vrais comptes créés depuis l'app
+```
+
+Mot de passe commun de tous les comptes de démo : `Demo1234!`
+(ex. `demo_etu1` à `demo_etu15`, `demo_rh1` à `demo_rh5`).
+
+**Classement des meilleurs profils** (`/etudiants/classement/`) : page
+publique qui trie les étudiants (au profil public) par score
+d'employabilité décroissant, avec médailles 🥇🥈🥉 pour le podium.
+
+## Conseiller de carrière IA (100 % local)
+
+Un module d'aide à la décision (app `skillmap_ai`) qui analyse le profil
+d'un étudiant et recommande les métiers de l'informatique qui lui
+correspondent, avec un plan de progression personnalisé.
+
+**Important pour la soutenance** : ce n'est PAS un grand modèle de langage
+(pas de ChatGPT, pas de Claude, pas de connexion internet). C'est un
+système d'IA symbolique à base de règles, entièrement transparent :
+
+1. **Base de connaissances** (`skillmap_ai/knowledge_base.py`) — 15 métiers
+   de l'informatique, chacun avec ses compétences obligatoires et
+   recommandées. Stockée en base de données (modèles `Career` /
+   `CareerSkill`), donc modifiable depuis l'admin Django sans toucher au code.
+2. **Moteur de recommandation** (`skillmap_ai/engine.py`) — calcule un
+   pourcentage de compatibilité par une formule pondérée simple et
+   explicable (70 % compétences obligatoires + 30 % recommandées).
+3. **Génération d'explications** (`skillmap_ai/explainer.py`) — un texte en
+   français est assemblé à partir de gabarits pré-rédigés remplis avec les
+   résultats du calcul (génération de texte "à base de règles", une
+   technique d'IA symbolique classique, pas un réseau de neurones).
+4. **Plan de progression** (`skillmap_ai/roadmap.py`) — regroupe les
+   compétences manquantes en étapes d'apprentissage.
+5. **Simulateur d'évolution** (`skillmap_ai/simulator.py`) — réutilise
+   exactement la formule du score d'employabilité pour estimer l'effet
+   d'apprendre de nouvelles compétences, sans rien modifier en base.
+
+### Mise en route
+
+```bash
+python manage.py migrate
+python manage.py seed_skills      # référentiel de compétences
+python manage.py seed_careers     # base de connaissances des métiers
+```
+
+Accessible depuis la sidebar étudiant : **🧭 Conseiller de carrière IA**
+(page `/conseiller-carriere/`).
+
+Pour ajouter un métier : éditer `skillmap_ai/knowledge_base.py` puis
+relancer `python manage.py seed_careers` — ou l'ajouter directement dans
+l'admin Django (`/admin/skillmap_ai/career/`).

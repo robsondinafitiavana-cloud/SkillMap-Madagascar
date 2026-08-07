@@ -18,6 +18,7 @@ urlpatterns = [
     path('tableau-de-bord/', include('dashboard.urls')),
     path('notifications/', include('notifications.urls')),
     path('messages/', include('messaging.urls')),
+    path('conseiller-carriere/', include('skillmap_ai.urls')),
 ]
 
 if settings.DEBUG:

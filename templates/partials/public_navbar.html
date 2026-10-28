@@ -20,7 +20,7 @@
       </form>
       {% else %}
       <a href="{% url 'accounts:login' %}" class="text-sm font-medium text-gray-600 hover:text-mg-red px-3 py-2">Connexion</a>
-      <a href="{% url 'accounts:choose_role' %}" class="text-sm font-semibold bg-mg-red hover:bg-mg-redDark text-white px-4 py-2 rounded-lg transition">S'inscrire</a>
+      <a href="{% url 'accounts:choose_role' %}" class="btn-accent">S'inscrire</a>
       {% endif %}
     </div>
   </div>

@@ -8,7 +8,7 @@
     Basé sur le score d'employabilité (compétences 40 % · projets 25 % · certificats 20 % · expériences 15 %).
   </p>
 
-  <div class="bg-white border border-gray-200 rounded-2xl divide-y divide-gray-100">
+  <div class="card-hover divide-y divide-gray-100">
     {% for student, score in page_obj %}
     <a href="{% url 'students:portfolio' student.slug %}" class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50">
       <div class="w-9 h-9 flex-shrink-0 rounded-full flex items-center justify-center font-extrabold text-sm

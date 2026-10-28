@@ -20,7 +20,7 @@
   <div class="grid lg:grid-cols-3 gap-6">
 
     <!-- Radar de compétences -->
-    <div class="bg-white border border-gray-200 rounded-2xl p-6">
+    <div class="card-hover p-6">
       <p class="text-sm font-semibold text-gray-700 mb-3">Radar de compétences</p>
       {% if radar_labels|length > 2 %}
       <canvas id="radarChart" height="220"></canvas>
@@ -30,7 +30,7 @@
     </div>
 
     <!-- Top 5 métiers recommandés -->
-    <div class="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6">
+    <div class="lg:col-span-2 card-hover p-6">
       <p class="text-sm font-semibold text-gray-700 mb-3">Top métiers recommandés</p>
       <div class="space-y-3">
         {% for m in top_matches %}
@@ -71,7 +71,7 @@
 
   <!-- Plan de progression -->
   {% if roadmap %}
-  <div class="bg-white border border-gray-200 rounded-2xl p-6 mt-6">
+  <div class="card-hover p-6 mt-6">
     <p class="text-sm font-semibold text-gray-700 mb-1 flex items-center gap-2">{% icon "map" "w-4 h-4" %} Plan de progression vers {{ roadmap.target_career.name }}</p>
     {% if roadmap.already_ready %}
     <p class="text-sm text-mg-green mt-3 flex items-center gap-2">{% icon "check-circle" "w-5 h-5" %} Tu maîtrises déjà toutes les compétences clés pour ce métier !</p>
@@ -96,7 +96,7 @@
   {% endif %}
 
   <!-- Simulateur d'évolution -->
-  <div class="bg-white border border-gray-200 rounded-2xl p-6 mt-6 mb-10">
+  <div class="card-hover p-6 mt-6 mb-10">
     <p class="text-sm font-semibold text-gray-700 mb-1 flex items-center gap-2">{% icon "sparkles" "w-4 h-4" %} Simuler mon évolution</p>
     <p class="text-xs text-gray-400 mb-4">Coche ce que tu envisages d'apprendre et regarde l'effet estimé sur ton score d'employabilité.</p>
 
@@ -111,7 +111,7 @@
         <input type="checkbox" id="sim-add-project"> + 1 nouveau projet
       </label>
     </div>
-    <button id="sim-run-btn" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">Simuler mon évolution</button>
+    <button id="sim-run-btn" class="btn-primary">Simuler mon évolution</button>
 
     <div id="sim-result" class="hidden mt-5">
       <div class="flex items-center gap-4">

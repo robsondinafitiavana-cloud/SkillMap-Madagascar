@@ -9,13 +9,13 @@
       <p class="text-gray-500 mt-2">Choisissez le type de compte à créer</p>
     </div>
     <div class="grid md:grid-cols-2 gap-6">
-      <a href="{% url 'accounts:register_student' %}" class="group bg-white border border-gray-200 rounded-2xl p-8 hover:border-mg-green hover:shadow-lg transition">
+      <a href="{% url 'accounts:register_student' %}" class="group card-hover p-8 hover:border-mg-green hover:shadow-lg transition">
         <div class="w-12 h-12 rounded-xl bg-mg-green/10 text-mg-green flex items-center justify-center mb-4">{% icon "academic-cap" "w-6 h-6" %}</div>
         <h2 class="text-lg font-bold text-gray-900 mb-1">Je suis étudiant(e)</h2>
         <p class="text-sm text-gray-500">Valorisez vos compétences, projets et certificats. Générez votre CV et postulez aux offres.</p>
         <span class="inline-block mt-4 text-sm font-semibold text-mg-green group-hover:underline">Créer mon profil étudiant &rarr;</span>
       </a>
-      <a href="{% url 'accounts:register_company' %}" class="group bg-white border border-gray-200 rounded-2xl p-8 hover:border-mg-red hover:shadow-lg transition">
+      <a href="{% url 'accounts:register_company' %}" class="group card-hover p-8 hover:border-mg-red hover:shadow-lg transition">
         <div class="w-12 h-12 rounded-xl bg-mg-red/10 text-mg-red flex items-center justify-center mb-4">{% icon "building-office" "w-6 h-6" %}</div>
         <h2 class="text-lg font-bold text-gray-900 mb-1">Je suis une entreprise</h2>
         <p class="text-sm text-gray-500">Recherchez des talents, publiez des offres et recrutez les meilleurs profils.</p>

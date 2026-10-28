@@ -1,0 +1,53 @@
+{% load icons %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}SkillMap Madagascar{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'css/app.css' %}?v=8">
+</head>
+<body class="bg-white text-gray-800 antialiased">
+<div class="min-h-screen flex">
+
+  <!-- Panneau de marque (masqué sur mobile) -->
+  <div class="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-mg-red via-mg-red/90 to-mg-green flex-col justify-between p-12 text-white overflow-hidden">
+    <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/5"></div>
+    <div class="absolute -bottom-32 -left-16 w-96 h-96 rounded-full bg-white/5"></div>
+
+    <a href="{% url 'root' %}" class="relative z-10 flex items-center gap-2">
+      <div class="w-10 h-10 rounded-xl bg-white/15 backdrop-blur flex items-center justify-center font-bold">SM</div>
+      <span class="font-bold text-xl">SkillMap<span class="opacity-70">.</span> Madagascar</span>
+    </a>
+
+    <div class="relative z-10">
+      <h2 class="text-3xl font-extrabold leading-snug mb-5">
+        La plateforme qui connecte les talents malgaches aux entreprises qui les recherchent.
+      </h2>
+      <ul class="space-y-3 text-white/90 text-sm">
+        <li class="flex items-start gap-2.5">{% icon "light-bulb" "w-5 h-5 flex-shrink-0 mt-0.5" %} Cartographie intelligente de tes compétences</li>
+        <li class="flex items-start gap-2.5">{% icon "sparkles" "w-5 h-5 flex-shrink-0 mt-0.5" %} Conseiller de carrière IA, 100 % local</li>
+        <li class="flex items-start gap-2.5">{% icon "document-text" "w-5 h-5 flex-shrink-0 mt-0.5" %} Génération automatique de ton CV</li>
+        <li class="flex items-start gap-2.5">{% icon "chat-bubble" "w-5 h-5 flex-shrink-0 mt-0.5" %} Messagerie directe avec les recruteurs</li>
+      </ul>
+    </div>
+
+    <p class="relative z-10 text-xs text-white/60">SkillMap Madagascar — </p>
+  </div>
+
+  <!-- Panneau du formulaire -->
+  <div class="flex-1 flex items-center justify-center p-6 sm:p-10">
+    <div class="w-full max-w-md">
+      <a href="{% url 'root' %}" class="lg:hidden flex items-center justify-center gap-2 mb-8">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-mg-red to-mg-green flex items-center justify-center text-white font-bold text-sm">SM</div>
+        <span class="font-bold text-gray-900 text-lg">SkillMap<span class="text-mg-red">.</span></span>
+      </a>
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+
+</div>
+{% include 'partials/messages_public.html' %}
+</body>
+</html>

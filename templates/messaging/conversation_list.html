@@ -3,7 +3,7 @@
 {% block content %}
 <h1 class="text-2xl font-extrabold text-gray-900 mb-6">Mes messages</h1>
 
-<div class="bg-white border border-gray-200 rounded-2xl divide-y divide-gray-100">
+<div class="card-hover divide-y divide-gray-100">
   {% for item in items %}
   <a href="{% url 'messaging:conversation_detail' item.conversation.pk %}" class="flex items-center justify-between px-5 py-4 hover:bg-gray-50">
     <div class="flex items-center gap-3">

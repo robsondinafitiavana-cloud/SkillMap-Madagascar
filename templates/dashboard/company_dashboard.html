@@ -8,37 +8,37 @@
     <p class="text-gray-500 text-sm">{{ company.sector|default:"Secteur non renseigné" }} • {{ company.city|default:"Madagascar" }}</p>
   </div>
   <div class="flex gap-3">
-    <a href="{% url 'companies:search_candidates' %}" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">{% icon "magnifying-glass" "w-4 h-4 inline -mt-0.5" %} Rechercher des talents</a>
-    <a href="{% url 'jobs:job_create' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">{% icon "plus" "w-4 h-4 inline -mt-0.5" %} Publier une offre</a>
+    <a href="{% url 'companies:search_candidates' %}" class="btn-primary">{% icon "magnifying-glass" "w-4 h-4 inline -mt-0.5" %} Rechercher des talents</a>
+    <a href="{% url 'jobs:job_create' %}" class="btn-accent">{% icon "plus" "w-4 h-4 inline -mt-0.5" %} Publier une offre</a>
   </div>
 </div>
 
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+  <div class="card-hover p-5">
     <p class="text-xs text-gray-400 font-medium uppercase">Offres publiées</p>
     <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_jobs }}</p>
   </div>
-  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+  <div class="card-hover p-5">
     <p class="text-xs text-gray-400 font-medium uppercase">Offres actives</p>
     <p class="text-2xl font-extrabold text-mg-green mt-1">{{ nb_active_jobs }}</p>
   </div>
-  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+  <div class="card-hover p-5">
     <p class="text-xs text-gray-400 font-medium uppercase">Candidatures reçues</p>
     <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_applications }}</p>
   </div>
-  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+  <div class="card-hover p-5">
     <p class="text-xs text-gray-400 font-medium uppercase">Profils consultés</p>
     <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_profiles_viewed }}</p>
   </div>
 </div>
 
 <div class="grid lg:grid-cols-3 gap-6">
-  <div class="bg-white border border-gray-200 rounded-2xl p-6">
+  <div class="card-hover p-6">
     <p class="text-sm font-semibold text-gray-700 mb-3">Candidatures par statut</p>
     <canvas id="statusChart" height="220"></canvas>
   </div>
 
-  <div class="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6">
+  <div class="lg:col-span-2 card-hover p-6">
     <div class="flex items-center justify-between mb-3">
       <p class="text-sm font-semibold text-gray-700">Offres récentes</p>
       <a href="{% url 'jobs:company_job_list' %}" class="text-xs text-mg-green font-semibold hover:underline">Voir tout</a>

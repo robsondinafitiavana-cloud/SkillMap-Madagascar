@@ -5,7 +5,7 @@
 <div class="max-w-4xl mx-auto px-4 md:px-6 py-8">
 <h1 class="text-2xl font-extrabold text-gray-900 mb-6">Offres d'emploi</h1>
 
-<form method="get" class="bg-white border border-gray-200 rounded-2xl p-4 mb-6 grid md:grid-cols-4 gap-3">
+<form method="get" class="card-hover p-4 mb-6 grid md:grid-cols-4 gap-3">
   <input type="text" name="q" value="{{ filters.q }}" placeholder="Titre, compétence..." class="md:col-span-2">
   <select name="contract_type">
     <option value="">Tous les contrats</option>
@@ -15,7 +15,7 @@
   </select>
   <div class="flex gap-2">
     <input type="text" name="city" value="{{ filters.city }}" placeholder="Ville">
-    <button type="submit" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-4 rounded-lg text-sm whitespace-nowrap">Filtrer</button>
+    <button type="submit" class="btn-primary">Filtrer</button>
   </div>
 </form>
 
@@ -36,7 +36,7 @@
     </div>
   </a>
   {% empty %}
-  <div class="bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Aucune offre ne correspond à votre recherche.</div>
+  {% include 'partials/empty_state.html' with icon_name='magnifying-glass' title='Aucune offre ne correspond à ta recherche' subtitle='Essaie avec des filtres moins restrictifs.' %}
   {% endfor %}
 </div>
 {% include 'partials/pagination.html' %}

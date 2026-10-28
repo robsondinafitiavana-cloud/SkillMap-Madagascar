@@ -4,11 +4,11 @@
 {% block content %}
 <div class="flex items-center justify-between mb-6">
   <h1 class="text-2xl font-extrabold text-gray-900">Mes projets</h1>
-  <a href="{% url 'projects:project_create' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">{% icon "plus" "w-4 h-4 inline -mt-0.5" %} Ajouter un projet</a>
+  <a href="{% url 'projects:project_create' %}" class="btn-accent">{% icon "plus" "w-4 h-4 inline -mt-0.5" %} Ajouter un projet</a>
 </div>
 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
   {% for p in projects %}
-  <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden flex flex-col">
+  <div class="card-hover overflow-hidden flex flex-col">
     {% if p.image %}<img src="{{ p.image.url }}" class="h-36 w-full object-cover">{% else %}<div class="h-36 w-full bg-gradient-to-br from-mg-red/10 to-mg-green/10 flex items-center justify-center text-mg-green">{% icon "briefcase" "w-9 h-9" %}</div>{% endif %}
     <div class="p-5 flex-1 flex flex-col">
       <p class="font-bold text-gray-900">{{ p.title }}</p>
@@ -27,7 +27,8 @@
     </div>
   </div>
   {% empty %}
-  <div class="md:col-span-2 lg:col-span-3 bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Aucun projet ajouté pour le moment.</div>
+  {% url 'projects:project_create' as create_url %}
+  {% include 'partials/empty_state.html' with icon_name='briefcase' title='Aucun projet ajouté pour le moment' cta_url=create_url cta_label='Ajouter un projet' %}
   {% endfor %}
 </div>
 {% endblock %}

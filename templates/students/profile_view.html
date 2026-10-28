@@ -24,11 +24,11 @@
     </div>
     <div class="flex gap-2">
       <a href="{% url 'students:portfolio' student.slug %}" target="_blank"
-         class="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold px-4 py-2 rounded-lg text-sm transition">
+         class="btn-secondary">
         {% icon "eye" "w-4 h-4 inline -mt-0.5" %} Voir mon profil professionnel
       </a>
       <a href="{% url 'students:profile_edit' %}"
-         class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-4 py-2 rounded-lg text-sm transition">
+         class="btn-primary">
         {% icon "pencil" "w-4 h-4 inline -mt-0.5" %} Modifier le profil
       </a>
     </div>
@@ -44,19 +44,19 @@
 
   <!-- Statistiques, esprit Instagram -->
   <div class="grid grid-cols-4 gap-3 mt-6">
-    <div class="bg-white border border-gray-200 rounded-2xl p-4 text-center">
+    <div class="card-hover p-4 text-center">
       <p class="text-xl font-extrabold text-gray-900">{{ nb_skills }}</p>
       <p class="text-xs text-gray-400">Compétences</p>
     </div>
-    <div class="bg-white border border-gray-200 rounded-2xl p-4 text-center">
+    <div class="card-hover p-4 text-center">
       <p class="text-xl font-extrabold text-gray-900">{{ nb_projects }}</p>
       <p class="text-xs text-gray-400">Projets</p>
     </div>
-    <div class="bg-white border border-gray-200 rounded-2xl p-4 text-center">
+    <div class="card-hover p-4 text-center">
       <p class="text-xl font-extrabold text-gray-900">{{ nb_certificates }}</p>
       <p class="text-xs text-gray-400">Certificats</p>
     </div>
-    <div class="bg-white border border-gray-200 rounded-2xl p-4 text-center">
+    <div class="card-hover p-4 text-center">
       <p class="text-xl font-extrabold text-mg-green">{{ score.total }}</p>
       <p class="text-xs text-gray-400">Score /100</p>
     </div>
@@ -71,7 +71,7 @@
   </div>
 
   <!-- Compétences -->
-  <div id="competences" class="bg-white border border-gray-200 rounded-2xl p-6 mt-4 scroll-mt-4">
+  <div id="competences" class="card-hover p-6 mt-4 scroll-mt-4">
     <div class="flex items-center justify-between mb-3">
       <h2 class="font-bold text-gray-900">Compétences</h2>
       <a href="{% url 'skills:skill_list' %}" class="text-xs text-mg-green font-semibold hover:underline inline-flex items-center gap-1">Gérer {% icon "arrow-right" "w-3 h-3" %}</a>
@@ -84,7 +84,7 @@
   </div>
 
   <!-- Projets -->
-  <div id="projets" class="bg-white border border-gray-200 rounded-2xl p-6 mt-4 scroll-mt-4">
+  <div id="projets" class="card-hover p-6 mt-4 scroll-mt-4">
     <div class="flex items-center justify-between mb-3">
       <h2 class="font-bold text-gray-900">Projets</h2>
       <a href="{% url 'projects:project_list' %}" class="text-xs text-mg-green font-semibold hover:underline inline-flex items-center gap-1">Gérer {% icon "arrow-right" "w-3 h-3" %}</a>
@@ -101,7 +101,7 @@
   </div>
 
   <!-- Certificats -->
-  <div id="certificats" class="bg-white border border-gray-200 rounded-2xl p-6 mt-4 scroll-mt-4">
+  <div id="certificats" class="card-hover p-6 mt-4 scroll-mt-4">
     <div class="flex items-center justify-between mb-3">
       <h2 class="font-bold text-gray-900">Certificats</h2>
       <a href="{% url 'certificates:certificate_list' %}" class="text-xs text-mg-green font-semibold hover:underline inline-flex items-center gap-1">Gérer {% icon "arrow-right" "w-3 h-3" %}</a>
@@ -112,7 +112,7 @@
   </div>
 
   <!-- Expériences -->
-  <div id="experiences" class="bg-white border border-gray-200 rounded-2xl p-6 mt-4 mb-8 scroll-mt-4">
+  <div id="experiences" class="card-hover p-6 mt-4 mb-8 scroll-mt-4">
     <div class="flex items-center justify-between mb-3">
       <h2 class="font-bold text-gray-900">Expériences</h2>
       <a href="{% url 'students:experience_list' %}" class="text-xs text-mg-green font-semibold hover:underline inline-flex items-center gap-1">Gérer {% icon "arrow-right" "w-3 h-3" %}</a>

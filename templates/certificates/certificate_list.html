@@ -4,11 +4,11 @@
 {% block content %}
 <div class="flex items-center justify-between mb-6">
   <h1 class="text-2xl font-extrabold text-gray-900">Mes certificats</h1>
-  <a href="{% url 'certificates:certificate_create' %}" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">{% icon "plus" "w-4 h-4 inline -mt-0.5" %} Ajouter un certificat</a>
+  <a href="{% url 'certificates:certificate_create' %}" class="btn-accent">{% icon "plus" "w-4 h-4 inline -mt-0.5" %} Ajouter un certificat</a>
 </div>
 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
   {% for c in certificates %}
-  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+  <div class="card-hover p-5">
     {% if c.image %}<img src="{{ c.image.url }}" class="h-32 w-full object-cover rounded-lg mb-3">{% endif %}
     <p class="font-bold text-gray-900">{{ c.title }}</p>
     <p class="text-sm text-gray-500">{{ c.organization }}</p>
@@ -19,7 +19,8 @@
     </div>
   </div>
   {% empty %}
-  <div class="md:col-span-2 lg:col-span-3 bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Aucun certificat ajouté pour le moment.</div>
+  {% url 'certificates:certificate_create' as create_url %}
+  {% include 'partials/empty_state.html' with icon_name='academic-cap' title='Aucun certificat ajouté pour le moment' cta_url=create_url cta_label='Ajouter un certificat' %}
   {% endfor %}
 </div>
 {% endblock %}

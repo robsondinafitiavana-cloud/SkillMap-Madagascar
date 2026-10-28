@@ -5,7 +5,7 @@
 <p class="text-gray-500 text-sm mb-6">{{ applications.count }} candidature(s) reçue(s)</p>
 <div class="space-y-3">
   {% for a in applications %}
-  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+  <div class="card-hover p-5">
     <div class="flex items-center justify-between">
       <div>
         <a href="{% url 'companies:candidate_detail' a.student.pk %}" class="font-semibold text-gray-900 hover:text-mg-green">{{ a.student.full_name }}</a>
@@ -26,7 +26,7 @@
     </div>
   </div>
   {% empty %}
-  <div class="bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Aucune candidature reçue pour cette offre.</div>
+  {% include 'partials/empty_state.html' with icon_name='inbox' title='Aucune candidature reçue pour cette offre' subtitle="Les candidatures apparaîtront ici dès qu'un étudiant postulera." %}
   {% endfor %}
 </div>
 {% endblock %}

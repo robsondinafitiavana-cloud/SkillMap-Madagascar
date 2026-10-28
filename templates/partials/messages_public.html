@@ -1,12 +1,31 @@
+{% load icons %}
 {% if messages %}
-<div class="max-w-md mx-auto mt-4 space-y-2 px-4">
+<div class="fixed top-4 right-4 z-50 flex flex-col gap-2 w-full max-w-sm" id="toast-container">
   {% for message in messages %}
-  <div class="px-4 py-3 rounded-lg text-sm font-medium border
-    {% if message.tags == 'success' %}bg-green-50 text-mg-green border-green-200
-    {% elif message.tags == 'error' %}bg-red-50 text-mg-red border-red-200
-    {% else %}bg-blue-50 text-blue-700 border-blue-200{% endif %}">
-    {{ message }}
+  <div class="toast bg-white border rounded-xl px-4 py-3 text-sm font-medium flex items-start gap-2.5
+    {% if message.tags == 'success' %}border-green-200 text-mg-green
+    {% elif message.tags == 'error' %}border-red-200 text-mg-red
+    {% elif message.tags == 'warning' %}border-amber-200 text-amber-700
+    {% else %}border-blue-200 text-blue-700{% endif %}">
+    {% if message.tags == 'success' %}{% icon "check-circle" "w-5 h-5 flex-shrink-0" %}
+    {% elif message.tags == 'error' %}{% icon "lock-closed" "w-5 h-5 flex-shrink-0" %}
+    {% else %}{% icon "bell" "w-5 h-5 flex-shrink-0" %}{% endif %}
+    <span class="flex-1 pt-0.5">{{ message }}</span>
+    <button type="button" class="toast-close text-gray-300 hover:text-gray-500 flex-shrink-0" aria-label="Fermer">{% icon "x-mark" "w-3.5 h-3.5" %}</button>
   </div>
   {% endfor %}
 </div>
+<script>
+(function () {
+  const dismiss = (el) => {
+    if (!el || el.classList.contains('toast-out')) return;
+    el.classList.add('toast-out');
+    setTimeout(() => el.remove(), 250);
+  };
+  document.querySelectorAll('#toast-container .toast').forEach((el, i) => {
+    const timer = setTimeout(() => dismiss(el), 4500 + i * 150);
+    el.querySelector('.toast-close')?.addEventListener('click', () => { clearTimeout(timer); dismiss(el); });
+  });
+})();
+</script>
 {% endif %}

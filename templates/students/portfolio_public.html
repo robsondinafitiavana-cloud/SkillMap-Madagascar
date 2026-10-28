@@ -9,7 +9,7 @@
     {% icon "lock-closed" "w-4 h-4 inline -mt-0.5" %} Aperçu uniquement — ce portfolio n'est pas encore public. Les entreprises ne peuvent pas le voir tant que tu n'as pas activé "portfolio public" dans <a href="{% url 'students:profile_edit' %}" class="underline font-semibold">Modifier le profil</a>.
   </div>
   {% endif %}
-  <div class="bg-white border border-gray-200 rounded-2xl p-8 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
+  <div class="card-hover p-8 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
     {% if student.photo %}
     <img src="{{ student.photo.url }}" class="w-28 h-28 rounded-full object-cover avatar-img border-4 border-white shadow" alt="{{ student.full_name }}">
     {% else %}
@@ -31,11 +31,11 @@
   </div>
 
   {% if user.is_authenticated and user.is_company %}
-  <a href="{% url 'messaging:start_with_student' student.pk %}" class="inline-block mt-4 bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition">{% icon "chat-bubble" "w-4 h-4 inline -mt-0.5" %} Envoyer un message</a>
+  <a href="{% url 'messaging:start_with_student' student.pk %}" class="btn-primary mt-4">{% icon "chat-bubble" "w-4 h-4 inline -mt-0.5" %} Envoyer un message</a>
   {% endif %}
 
   <div class="grid md:grid-cols-2 gap-6 mt-6">
-    <div class="bg-white border border-gray-200 rounded-2xl p-6">
+    <div class="card-hover p-6">
       <h2 class="font-bold text-gray-900 mb-3">Compétences</h2>
       <div class="flex flex-wrap gap-2">
         {% for ss in student.student_skills.all %}
@@ -43,7 +43,7 @@
         {% empty %}<p class="text-sm text-gray-400">Aucune compétence renseignée.</p>{% endfor %}
       </div>
     </div>
-    <div class="bg-white border border-gray-200 rounded-2xl p-6">
+    <div class="card-hover p-6">
       <h2 class="font-bold text-gray-900 mb-3">Certificats</h2>
       {% for c in student.certificates.all %}
       <p class="text-sm text-gray-700 py-1.5 border-b border-gray-50 last:border-0"><b>{{ c.title }}</b> — {{ c.organization }} ({{ c.issue_date|date:"m/Y" }})</p>
@@ -51,7 +51,7 @@
     </div>
   </div>
 
-  <div class="bg-white border border-gray-200 rounded-2xl p-6 mt-6">
+  <div class="card-hover p-6 mt-6">
     <h2 class="font-bold text-gray-900 mb-4">Projets</h2>
     <div class="grid md:grid-cols-2 gap-4">
       {% for p in student.projects.all %}

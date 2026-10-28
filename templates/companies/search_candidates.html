@@ -3,7 +3,7 @@
 {% block content %}
 <h1 class="text-2xl font-extrabold text-gray-900 mb-6">Rechercher des talents</h1>
 
-<form method="get" class="bg-white border border-gray-200 rounded-2xl p-4 mb-6 grid md:grid-cols-5 gap-3">
+<form method="get" class="card-hover p-4 mb-6 grid md:grid-cols-5 gap-3">
   <input type="text" name="skill" value="{{ filters.skill }}" placeholder="Compétence">
   <input type="text" name="university" value="{{ filters.university }}" placeholder="Université">
   <input type="text" name="city" value="{{ filters.city }}" placeholder="Ville">
@@ -15,7 +15,7 @@
       <option value="{{ value }}" {% if filters.level == value %}selected{% endif %}>{{ label }}</option>
       {% endfor %}
     </select>
-    <button type="submit" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-4 rounded-lg text-sm whitespace-nowrap">Chercher</button>
+    <button type="submit" class="btn-primary">Chercher</button>
   </div>
 </form>
 
@@ -42,7 +42,7 @@
     </div>
   </a>
   {% empty %}
-  <div class="md:col-span-2 lg:col-span-3 bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Aucun profil ne correspond à vos critères.</div>
+  {% include 'partials/empty_state.html' with icon_name='magnifying-glass' title='Aucun profil ne correspond à tes critères' subtitle='Essaie avec des filtres moins restrictifs.' %}
   {% endfor %}
 </div>
 {% include 'partials/pagination.html' %}

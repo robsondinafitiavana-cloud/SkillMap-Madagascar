@@ -4,7 +4,7 @@
 <h1 class="text-2xl font-extrabold text-gray-900 mb-6">Mes candidatures</h1>
 <div class="space-y-3">
   {% for a in applications %}
-  <div class="bg-white border border-gray-200 rounded-2xl p-5 flex items-center justify-between">
+  <div class="card-hover p-5 flex items-center justify-between">
     <div>
       <p class="font-semibold text-gray-900">{{ a.job.title }}</p>
       <p class="text-sm text-gray-500">{{ a.job.company.company_name }} • Envoyée le {{ a.applied_at|date:"d/m/Y" }}</p>
@@ -17,7 +17,8 @@
     </span>
   </div>
   {% empty %}
-  <div class="bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Vous n'avez postulé à aucune offre pour le moment.</div>
+  {% url 'jobs:job_list' as job_list_url %}
+  {% include 'partials/empty_state.html' with icon_name='inbox' title="Tu n'as postulé à aucune offre pour le moment" cta_url=job_list_url cta_label='Parcourir les offres' %}
   {% endfor %}
 </div>
 {% endblock %}

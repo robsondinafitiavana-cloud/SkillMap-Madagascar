@@ -1,21 +1,17 @@
-{% extends 'base_public.html' %}
+{% extends 'base_auth.html' %}
 {% block title %}Inscription entreprise — SkillMap Madagascar{% endblock %}
 {% block content %}
-<section class="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-10">
-  <div class="max-w-lg w-full bg-white border border-gray-200 rounded-2xl shadow-sm p-8">
-    <h1 class="text-2xl font-extrabold text-gray-900 mb-1">Créer mon compte entreprise</h1>
-    <p class="text-gray-500 text-sm mb-6">Trouvez les meilleurs talents malgaches.</p>
-    <form method="post" class="space-y-4">
-      {% csrf_token %}
-      <div><label class="text-sm font-medium text-gray-700">Nom de l'entreprise</label>{{ form.company_name }}{{ form.company_name.errors }}</div>
-      <div><label class="text-sm font-medium text-gray-700">Secteur d'activité</label>{{ form.sector }}{{ form.sector.errors }}</div>
-      <div><label class="text-sm font-medium text-gray-700">Nom d'utilisateur</label>{{ form.username }}{{ form.username.errors }}</div>
-      <div><label class="text-sm font-medium text-gray-700">Email</label>{{ form.email }}{{ form.email.errors }}</div>
-      <div><label class="text-sm font-medium text-gray-700">Mot de passe</label>{{ form.password1 }}{{ form.password1.errors }}</div>
-      <div><label class="text-sm font-medium text-gray-700">Confirmation</label>{{ form.password2 }}{{ form.password2.errors }}</div>
-      <button type="submit" class="w-full bg-mg-red hover:bg-mg-redDark text-white font-semibold py-2.5 rounded-lg transition">Créer mon compte</button>
-    </form>
-    <p class="text-center text-sm text-gray-500 mt-6">Déjà inscrit ? <a href="{% url 'accounts:login' %}" class="text-mg-red font-semibold hover:underline">Connexion</a></p>
-  </div>
-</section>
+<h1 class="text-2xl font-extrabold text-gray-900 mb-1">Créer mon compte entreprise</h1>
+<p class="text-gray-500 text-sm mb-6">Trouve les meilleurs talents malgaches.</p>
+<form method="post" class="space-y-4">
+  {% csrf_token %}
+  <div><label class="text-sm font-medium text-gray-700">Nom de l'entreprise</label>{{ form.company_name }}{{ form.company_name.errors }}</div>
+  <div><label class="text-sm font-medium text-gray-700">Secteur d'activité</label>{{ form.sector }}{{ form.sector.errors }}</div>
+  <div><label class="text-sm font-medium text-gray-700">Nom d'utilisateur</label>{{ form.username }}{{ form.username.errors }}</div>
+  <div><label class="text-sm font-medium text-gray-700">Email</label>{{ form.email }}{{ form.email.errors }}</div>
+  <div><label class="text-sm font-medium text-gray-700">Mot de passe</label>{{ form.password1 }}{{ form.password1.errors }}</div>
+  <div><label class="text-sm font-medium text-gray-700">Confirmation</label>{{ form.password2 }}{{ form.password2.errors }}</div>
+  <button type="submit" class="btn-accent w-full">Créer mon compte</button>
+</form>
+<p class="text-center text-sm text-gray-500 mt-6">Déjà inscrit ? <a href="{% url 'accounts:login' %}" class="text-mg-red font-semibold hover:underline">Connexion</a></p>
 {% endblock %}

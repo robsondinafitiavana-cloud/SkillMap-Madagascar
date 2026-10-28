@@ -5,37 +5,37 @@
 <h1 class="text-2xl font-extrabold text-gray-900 mb-6 flex items-center gap-2">{% icon "chart-bar" "w-6 h-6 text-mg-green" %} Tableau de bord administrateur</h1>
 
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+  <div class="card-hover p-5">
     <p class="text-xs text-gray-400 font-medium uppercase">Utilisateurs</p>
     <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_users }}</p>
     <p class="text-xs text-gray-400 mt-1">{{ nb_students }} étudiants • {{ nb_companies_users }} entreprises</p>
   </div>
-  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+  <div class="card-hover p-5">
     <p class="text-xs text-gray-400 font-medium uppercase">Entreprises</p>
     <p class="text-2xl font-extrabold text-mg-red mt-1">{{ nb_companies }}</p>
   </div>
-  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+  <div class="card-hover p-5">
     <p class="text-xs text-gray-400 font-medium uppercase">Offres</p>
     <p class="text-2xl font-extrabold text-mg-green mt-1">{{ nb_jobs }}</p>
   </div>
-  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+  <div class="card-hover p-5">
     <p class="text-xs text-gray-400 font-medium uppercase">Candidatures</p>
     <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_applications }}</p>
   </div>
 </div>
 
 <div class="grid md:grid-cols-2 gap-4 mb-6">
-  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+  <div class="card-hover p-5">
     <p class="text-xs text-gray-400 font-medium uppercase">Projets publiés</p>
     <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_projects }}</p>
   </div>
-  <div class="bg-white border border-gray-200 rounded-2xl p-5">
+  <div class="card-hover p-5">
     <p class="text-xs text-gray-400 font-medium uppercase">Certificats déposés</p>
     <p class="text-2xl font-extrabold text-gray-900 mt-1">{{ nb_certificates }}</p>
   </div>
 </div>
 
-<div class="bg-white border border-gray-200 rounded-2xl p-6">
+<div class="card-hover p-6">
   <p class="text-sm font-semibold text-gray-700 mb-3">Profils étudiants en attente de validation</p>
   {% if pending_validation %}
   <ul class="divide-y divide-gray-100">
@@ -45,7 +45,7 @@
         <p class="font-medium text-gray-800">{{ student.full_name }}</p>
         <p class="text-xs text-gray-400">{{ student.university }} • {{ student.department }}</p>
       </div>
-      <a href="{% url 'dashboard:validate_profile' student.user.id %}" class="bg-mg-green hover:bg-mg-greenDark text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">Valider</a>
+      <a href="{% url 'dashboard:validate_profile' student.user.id %}" class="btn-primary btn-sm">Valider</a>
     </li>
     {% endfor %}
   </ul>

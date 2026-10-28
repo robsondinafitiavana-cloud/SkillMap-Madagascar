@@ -5,9 +5,9 @@
   <h1 class="text-2xl font-extrabold text-gray-900 mb-1">Annuaire des étudiants</h1>
   <p class="text-gray-500 text-sm mb-6">Découvrez les talents malgaches qui ont rendu leur portfolio public.</p>
 
-  <form method="get" class="bg-white border border-gray-200 rounded-2xl p-4 mb-6 flex gap-3">
+  <form method="get" class="card-hover p-4 mb-6 flex gap-3">
     <input type="text" name="q" value="{{ q }}" placeholder="Filière ou université...">
-    <button type="submit" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 rounded-lg text-sm whitespace-nowrap">Rechercher</button>
+    <button type="submit" class="btn-primary">Rechercher</button>
   </form>
 
   <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -28,7 +28,7 @@
       </div>
     </a>
     {% empty %}
-    <div class="md:col-span-2 lg:col-span-3 bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center text-sm text-gray-400">Aucun profil public pour le moment.</div>
+    {% include 'partials/empty_state.html' with icon_name='academic-cap' title='Aucun profil public pour le moment' %}
     {% endfor %}
   </div>
   {% include 'partials/pagination.html' %}

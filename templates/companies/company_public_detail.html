@@ -3,7 +3,7 @@
 {% load icons %}
 {% block content %}
 <div class="max-w-3xl mx-auto px-4 md:px-6 py-10">
-  <div class="bg-white border border-gray-200 rounded-2xl p-8 flex items-start gap-6">
+  <div class="card-hover p-8 flex items-start gap-6">
     {% if company.logo %}<img src="{{ company.logo.url }}" class="w-20 h-20 rounded-xl object-cover avatar-img">{% else %}<div class="w-20 h-20 rounded-xl bg-mg-red/10 text-mg-red flex items-center justify-center text-2xl font-bold">{{ company.company_name|slice:":1" }}</div>{% endif %}
     <div>
       <h1 class="text-xl font-extrabold text-gray-900">{{ company.company_name }}</h1>
@@ -14,12 +14,12 @@
         {% if company.phone %}<span class="text-gray-500">{% icon "phone" "w-4 h-4 inline -mt-0.5" %} {{ company.phone }}</span>{% endif %}
       </div>
       {% if user.is_authenticated and user.is_student %}
-      <a href="{% url 'messaging:start_with_company' company.pk %}" class="inline-block mt-3 bg-mg-red hover:bg-mg-redDark text-white font-semibold px-5 py-2 rounded-lg text-sm transition">{% icon "chat-bubble" "w-4 h-4 inline -mt-0.5" %} Envoyer un message</a>
+      <a href="{% url 'messaging:start_with_company' company.pk %}" class="btn-accent mt-3">{% icon "chat-bubble" "w-4 h-4 inline -mt-0.5" %} Envoyer un message</a>
       {% endif %}
     </div>
   </div>
 
-  <div class="bg-white border border-gray-200 rounded-2xl p-6 mt-6">
+  <div class="card-hover p-6 mt-6">
     <h2 class="font-bold text-gray-900 mb-4">Offres actives ({{ active_jobs.count }})</h2>
     <div class="space-y-3">
       {% for job in active_jobs %}

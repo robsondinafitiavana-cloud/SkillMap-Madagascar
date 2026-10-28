@@ -3,7 +3,7 @@
 {% load icons %}
 {% block content %}
 <div class="max-w-3xl mx-auto px-4 md:px-6 py-8">
-  <div class="bg-white border border-gray-200 rounded-2xl p-8">
+  <div class="card-hover p-8">
     <div class="flex items-start justify-between">
       <div>
         <h1 class="text-2xl font-extrabold text-gray-900">{{ job.title }}</h1>
@@ -34,10 +34,10 @@
       {% if already_applied %}
       <div class="mt-8 bg-green-50 text-mg-green text-sm font-semibold px-4 py-3 rounded-lg flex items-center gap-2">{% icon "check-circle" "w-5 h-5" %} Vous avez déjà postulé à cette offre.</div>
       {% else %}
-      <a href="{% url 'applications:apply_to_job' job.pk %}" class="inline-block mt-8 bg-mg-red hover:bg-mg-redDark text-white font-semibold px-6 py-3 rounded-lg transition">Postuler à cette offre</a>
+      <a href="{% url 'applications:apply_to_job' job.pk %}" class="btn-accent mt-8">Postuler à cette offre</a>
       {% endif %}
     {% elif not user.is_authenticated %}
-      <a href="{% url 'accounts:login' %}" class="inline-block mt-8 bg-mg-red hover:bg-mg-redDark text-white font-semibold px-6 py-3 rounded-lg transition">Connectez-vous pour postuler</a>
+      <a href="{% url 'accounts:login' %}" class="btn-accent mt-8">Connectez-vous pour postuler</a>
     {% endif %}
   </div>
 </div>

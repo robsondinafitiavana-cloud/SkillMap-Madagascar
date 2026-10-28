@@ -9,7 +9,7 @@
     <h1 class="text-lg font-extrabold text-gray-900">{{ other_name }}</h1>
   </div>
 
-  <div class="bg-white border border-gray-200 rounded-2xl flex flex-col" style="height: 65vh;">
+  <div class="card-hover flex flex-col" style="height: 65vh;">
     <!-- Zone des messages : remplie côté serveur au chargement, puis
          complétée automatiquement en JS toutes les 4 secondes. -->
     <div id="chat-messages" class="flex-1 overflow-y-auto p-5 space-y-3">
@@ -31,7 +31,7 @@
       {% csrf_token %}
       <textarea id="chat-input" name="content" rows="1" placeholder="Écrivez votre message..."
         class="flex-1 resize-none"></textarea>
-      <button type="submit" class="bg-mg-green hover:bg-mg-greenDark text-white font-semibold px-5 rounded-lg text-sm">Envoyer</button>
+      <button type="submit" class="btn-primary">Envoyer</button>
     </form>
   </div>
 </div>

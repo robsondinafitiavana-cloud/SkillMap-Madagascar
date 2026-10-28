@@ -2,7 +2,7 @@
 {% block title %}{{ action }} une offre{% endblock %}
 {% block content %}
 <h1 class="text-2xl font-extrabold text-gray-900 mb-6">{{ action }} une offre</h1>
-<div class="bg-white border border-gray-200 rounded-2xl p-6 max-w-2xl">
+<div class="card-hover p-6 max-w-2xl">
   <form method="post" class="space-y-4">
     {% csrf_token %}
     <div><label class="text-sm font-medium text-gray-700">Titre</label>{{ form.title }}</div>
@@ -24,7 +24,7 @@
       <div class="grid grid-cols-2 gap-1 max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3">{{ form.required_skills }}</div>
     </div>
     <label class="flex items-center gap-2 text-sm text-gray-600">{{ form.is_active }} Offre active</label>
-    <button type="submit" class="bg-mg-red hover:bg-mg-redDark text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition">Publier</button>
+    <button type="submit" class="btn-accent">Publier</button>
   </form>
 </div>
 {% endblock %}

@@ -57,6 +57,7 @@ ICONS = {
     'flag': '<path stroke-linecap="round" stroke-linejoin="round" d="M6 3.5v17" /><path stroke-linecap="round" stroke-linejoin="round" d="M6 4.5c2-1 4 .5 6 0s4-1 6 0v8c-2-1-4 .5-6 0s-4-1-6 0z" />',
     'arrow-left': '<path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5M11 6l-6 6 6 6" />',
     'arrow-right': '<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />',
+    'x-mark': '<path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />',
 }
 
 
